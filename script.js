@@ -1,7 +1,6 @@
 //canvas setup
 var canvas = document.getElementById('canvas')
 var ctx = canvas.getContext('2d');
-
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
@@ -9,6 +8,7 @@ canvas.height = window.innerHeight;
 var blueGlowingRing = new Image();
 blueGlowingRing.src = "assets/blueGlowingRing.png"
 
+//make a disc object
 var disc = {
     x: 50,
     y: 50,
@@ -19,11 +19,13 @@ var disc = {
     yVelo: 600
 }
 
+//resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
 function resizeWindow(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }
+
 function drawBackground(){
     ctx.fillStyle = "black"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -56,7 +58,7 @@ function checkDiscCollision(){
 //runs every frame
 function update(deltatime){
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
 
     checkDiscCollision()
     moveDisc(deltatime)
