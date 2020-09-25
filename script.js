@@ -19,7 +19,11 @@ var disc = {
     yVelo: 600
 }
 
-
+window.addEventListener("resize", resizeWindow);
+function resizeWindow(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
 function drawBackground(){
     ctx.fillStyle = "black"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -51,6 +55,8 @@ function checkDiscCollision(){
 //update loop
 //runs every frame
 function update(deltatime){
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     checkDiscCollision()
     moveDisc(deltatime)
