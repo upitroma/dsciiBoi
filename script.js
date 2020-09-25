@@ -13,8 +13,10 @@ var disc = {
     x: 50,
     y: 50,
     radius: 50,
-    angle: .1, //radians
-    speed: 10
+
+    // pixels/second
+    xVelo: 400,
+    yVelo: 600
 }
 
 
@@ -28,6 +30,22 @@ function drawDisc(){
     ctx.drawImage(blueGlowingRing, disc.x-r, disc.y-r, disc.radius*2, disc.radius*2);
 }
 
+function moveDisc(deltatime){
+    disc.x+=disc.xVelo*deltatime;
+    disc.y+=disc.yVelo*deltatime;
+}
+
+function checkDiscCollision(){
+    if(disc.x>canvas.width || disc.x<0){
+        disc.xVelo*=-1;
+        disc.x=Math.min(Math.max(disc.x,0),canvas.width)//clamp x inside canvas
+    }
+    if(disc.y>canvas.height || disc.y<0){
+        disc.yVelo*=-1;
+        disc.y=Math.min(Math.max(disc.y,0),canvas.height)//clamp y inside canvas
+    }
+}
+
 
 
 //update loop
@@ -38,6 +56,8 @@ function update(deltatime){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
+    checkDiscCollision()
+    moveDisc(deltatime)
     drawBackground()
     drawDisc()
 }
