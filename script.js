@@ -52,10 +52,6 @@ function checkDiscCollision(){
 //runs every frame
 function update(deltatime){
 
-    //clear the canvas
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
     checkDiscCollision()
     moveDisc(deltatime)
     drawBackground()
