@@ -26,13 +26,24 @@ class Disc{
 var discs=[]
 
 //just for testing, will normally be populated at runtime
-discs.push(new Disc(), new Disc(50, 50, 600, 500, 1))
+//discs.push(new Disc(), new Disc(50, 50, 600, 500, 1))
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
 function resizeWindow(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+}
+
+//launch disc
+canvas.addEventListener("mousedown", launchDisc, false)
+function launchDisc(event){
+    discs.push(new Disc(
+        canvas.width/2,
+        canvas.height/2,
+        event.x-(canvas.width/2),
+        event.y-(canvas.height/2),)
+        )
 }
 
 function drawBackground(){
@@ -52,6 +63,12 @@ function drawDisc(){
 
         ctx.drawImage(color, d.x-r, d.y-r, d.radius*2, d.radius*2);
     }
+}
+
+function drawPlayer(){
+    ctx.fillStyle = "blue"
+    w=50
+    ctx.fillRect((canvas.width/2)-(w/2), (canvas.height/2)-(w/2), w, w);
 }
 
 function moveDisc(deltatime){
@@ -88,6 +105,7 @@ function update(deltatime){
     checkDiscCollision()
     moveDisc(deltatime)
     drawBackground()
+    drawPlayer()//if we decide to make player static, it could just become a part of the background
     drawDisc()
 }
   
