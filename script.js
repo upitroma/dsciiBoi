@@ -35,14 +35,14 @@ function resizeWindow(){
     canvas.height = window.innerHeight;
 }
 
-//launch disc
+//launch disc on mouse click
 canvas.addEventListener("mousedown", launchDisc, false)
 function launchDisc(event){
     discs.push(new Disc(
         canvas.width/2,
         canvas.height/2,
         event.x-(canvas.width/2),
-        event.y-(canvas.height/2),)
+        event.y-(canvas.height/2))
         )
 }
 
