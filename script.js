@@ -8,16 +8,21 @@ canvas.height = window.innerHeight;
 var blueGlowingRing = new Image();
 blueGlowingRing.src = "assets/blueGlowingRing.png"
 
-//make a disc object
-var disc = {
-    x: 50,
-    y: 50,
-    radius: 50,
 
-    // pixels/second
-    xVelo: 400,
-    yVelo: 600
+class disc{
+    constructor(x=50,y=50,xVelo=500,yVelo=600){
+        this.x=x
+        this.y=y
+        this.radius=50
+    
+        // pixels/second
+        this.xVelo=xVelo
+        this.yVelo=yVelo
+    }
+    
 }
+var discs=[]
+discs.push(new disc(), new disc(50, 50, 600, 500))
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -32,23 +37,37 @@ function drawBackground(){
 }
 
 function drawDisc(){
-    r=disc.radius
-    ctx.drawImage(blueGlowingRing, disc.x-r, disc.y-r, disc.radius*2, disc.radius*2);
+    for(i=0;i<discs.length; i++){
+        d=discs[i]
+        r=d.radius
+        ctx.drawImage(blueGlowingRing, d.x-r, d.y-r, d.radius*2, d.radius*2);
+    }
 }
 
 function moveDisc(deltatime){
-    disc.x+=disc.xVelo*deltatime;
-    disc.y+=disc.yVelo*deltatime;
+    for(i=0;i<discs.length; i++){
+        d=discs[i]
+        d.x+=d.xVelo*deltatime;
+        d.y+=d.yVelo*deltatime;
+        //console.log(discs)
+    }
+    //disc.x+=disc.xVelo*deltatime;
+    //disc.y+=disc.yVelo*deltatime;
 }
 
 function checkDiscCollision(){
-    if(disc.x>canvas.width || disc.x<0){
-        disc.xVelo*=-1;
-        disc.x=Math.min(Math.max(disc.x,0),canvas.width)//clamp x inside canvas
-    }
-    if(disc.y>canvas.height || disc.y<0){
-        disc.yVelo*=-1;
-        disc.y=Math.min(Math.max(disc.y,0),canvas.height)//clamp y inside canvas
+    for(i=0;i<discs.length; i++){
+        d=discs[i]
+
+        if(d.x>canvas.width || d.x<0){
+            d.xVelo*=-1;
+            d.x=Math.min(Math.max(d.x,0),canvas.width)//clamp x inside canvas
+        }
+        if(d.y>canvas.height || d.y<0){
+            d.yVelo*=-1;
+            d.y=Math.min(Math.max(d.y,0),canvas.height)//clamp y inside canvas
+        }
+
     }
 }
 
