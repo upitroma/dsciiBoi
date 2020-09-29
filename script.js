@@ -7,22 +7,26 @@ canvas.height = window.innerHeight;
 //load assets
 var blueGlowingRing = new Image();
 blueGlowingRing.src = "assets/blueGlowingRing.png"
+var orangeGlowingRing = new Image();
+orangeGlowingRing.src = "assets/orangeGlowingRing.png"
 
-
-class disc{
-    constructor(x=50,y=50,xVelo=500,yVelo=600){
+class Disc{
+    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=0){
         this.x=x
         this.y=y
         this.radius=50
+
+        this.discId=discId
     
         // pixels/second
         this.xVelo=xVelo
         this.yVelo=yVelo
     }
-    
 }
 var discs=[]
-discs.push(new disc(), new disc(50, 50, 600, 500))
+
+//just for testing, will normally be populated at runtime
+discs.push(new Disc(), new Disc(50, 50, 600, 500, 1))
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -40,7 +44,13 @@ function drawDisc(){
     for(i=0;i<discs.length; i++){
         d=discs[i]
         r=d.radius
-        ctx.drawImage(blueGlowingRing, d.x-r, d.y-r, d.radius*2, d.radius*2);
+
+        //set color based on discId
+        if(d.discId==0){color=blueGlowingRing}
+        else if(d.discId==1){color=orangeGlowingRing}
+        else{console.log("invalid discId")}
+
+        ctx.drawImage(color, d.x-r, d.y-r, d.radius*2, d.radius*2);
     }
 }
 
@@ -49,10 +59,7 @@ function moveDisc(deltatime){
         d=discs[i]
         d.x+=d.xVelo*deltatime;
         d.y+=d.yVelo*deltatime;
-        //console.log(discs)
     }
-    //disc.x+=disc.xVelo*deltatime;
-    //disc.y+=disc.yVelo*deltatime;
 }
 
 function checkDiscCollision(){
@@ -67,7 +74,6 @@ function checkDiscCollision(){
             d.yVelo*=-1;
             d.y=Math.min(Math.max(d.y,0),canvas.height)//clamp y inside canvas
         }
-
     }
 }
 
