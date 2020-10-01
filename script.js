@@ -50,8 +50,8 @@ function launchDisc(event){
     discs.push(new Disc(
         gameWidth/2,
         gameHeight/2,
-        (event.x-(canvas.width/2)) / scale,
-        (event.y-(canvas.height/2)) / scale)
+        ((event.x-((window.innerWidth-canvas.width)/2))-(canvas.width/2)) / scale,
+        ((event.y-((window.innerHeight-canvas.height)/2))-(canvas.height/2)) / scale)
         )
 }
 
