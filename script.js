@@ -7,17 +7,26 @@ canvas.height = window.innerHeight;
 //load assets
 var blueGlowingRing = new Image();
 blueGlowingRing.src = "assets/blueGlowingRing.png"
+var orangeGlowingRing = new Image();
+orangeGlowingRing.src = "assets/orangeGlowingRing.png"
 
-//make a disc object
-var disc = {
-    x: 50,
-    y: 50,
-    radius: 50,
+class Disc{
+    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=0){
+        this.x=x
+        this.y=y
+        this.radius=50
 
-    // pixels/second
-    xVelo: 400,
-    yVelo: 600
+        this.discId=discId
+    
+        // pixels/second
+        this.xVelo=xVelo
+        this.yVelo=yVelo
+    }
 }
+var discs=[]
+
+//just for testing, will normally be populated at runtime
+//discs.push(new Disc(), new Disc(50, 50, 600, 500, 1))
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -26,29 +35,62 @@ function resizeWindow(){
     canvas.height = window.innerHeight;
 }
 
+//launch disc on mouse click
+canvas.addEventListener("mousedown", launchDisc, false)
+function launchDisc(event){
+    discs.push(new Disc(
+        canvas.width/2,
+        canvas.height/2,
+        event.x-(canvas.width/2),
+        event.y-(canvas.height/2))
+        )
+}
+
 function drawBackground(){
     ctx.fillStyle = "black"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 }
 
 function drawDisc(){
-    r=disc.radius
-    ctx.drawImage(blueGlowingRing, disc.x-r, disc.y-r, disc.radius*2, disc.radius*2);
+    for(i=0;i<discs.length; i++){
+        d=discs[i]
+        r=d.radius
+
+        //set color based on discId
+        if(d.discId==0){color=blueGlowingRing}
+        else if(d.discId==1){color=orangeGlowingRing}
+        else{console.log("invalid discId")}
+
+        ctx.drawImage(color, d.x-r, d.y-r, d.radius*2, d.radius*2);
+    }
+}
+
+function drawPlayer(){
+    ctx.fillStyle = "blue"
+    w=50
+    ctx.fillRect((canvas.width/2)-(w/2), (canvas.height/2)-(w/2), w, w);
 }
 
 function moveDisc(deltatime){
-    disc.x+=disc.xVelo*deltatime;
-    disc.y+=disc.yVelo*deltatime;
+    for(i=0;i<discs.length; i++){
+        d=discs[i]
+        d.x+=d.xVelo*deltatime;
+        d.y+=d.yVelo*deltatime;
+    }
 }
 
 function checkDiscCollision(){
-    if(disc.x>canvas.width || disc.x<0){
-        disc.xVelo*=-1;
-        disc.x=Math.min(Math.max(disc.x,0),canvas.width)//clamp x inside canvas
-    }
-    if(disc.y>canvas.height || disc.y<0){
-        disc.yVelo*=-1;
-        disc.y=Math.min(Math.max(disc.y,0),canvas.height)//clamp y inside canvas
+    for(i=0;i<discs.length; i++){
+        d=discs[i]
+
+        if(d.x>canvas.width || d.x<0){
+            d.xVelo*=-1;
+            d.x=Math.min(Math.max(d.x,0),canvas.width)//clamp x inside canvas
+        }
+        if(d.y>canvas.height || d.y<0){
+            d.yVelo*=-1;
+            d.y=Math.min(Math.max(d.y,0),canvas.height)//clamp y inside canvas
+        }
     }
 }
 
@@ -63,6 +105,7 @@ function update(deltatime){
     checkDiscCollision()
     moveDisc(deltatime)
     drawBackground()
+    drawPlayer()//if we decide to make player static, it could just become a part of the background
     drawDisc()
 }
   
