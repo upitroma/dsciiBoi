@@ -1,8 +1,9 @@
 //canvas setup
 var canvas = document.getElementById('canvas')
 var ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+var ratio = 16/9;
+var scale = 1;
+resizeWindow();
 
 //load assets
 var blueGlowingRing = new Image();
@@ -32,7 +33,13 @@ var discs=[]
 window.addEventListener("resize", resizeWindow);
 function resizeWindow(){
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.height = canvas.width / ratio;
+    if (canvas.height > window.innerHeight)
+    {
+        canvas.height = window.innerHeight;
+        canvas.width = canvas.height * ratio;
+    }
+    scale = canvas.width / 1600;
 }
 
 //launch disc on mouse click
@@ -74,8 +81,8 @@ function drawPlayer(){
 function moveDisc(deltatime){
     for(i=0;i<discs.length; i++){
         d=discs[i]
-        d.x+=d.xVelo*deltatime;
-        d.y+=d.yVelo*deltatime;
+        d.x+=(d.xVelo*scale)*deltatime;
+        d.y+=(d.yVelo*scale)*deltatime;
     }
 }
 
