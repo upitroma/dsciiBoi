@@ -1,7 +1,9 @@
 //canvas setup
 var canvas = document.getElementById('canvas')
 var ctx = canvas.getContext('2d');
-var ratio = 16/9;
+var gameWidth = 1600;
+var gameHeight = 900;
+var ratio = gameWidth / gameHeight;
 var scale = 1;
 resizeWindow();
 
@@ -15,7 +17,7 @@ class Disc{
     constructor(x=50,y=50,xVelo=500,yVelo=600, discId=0){
         this.x=x
         this.y=y
-        this.radius=50
+        this.radius=40
 
         this.discId=discId
     
@@ -39,17 +41,17 @@ function resizeWindow(){
         canvas.height = window.innerHeight;
         canvas.width = canvas.height * ratio;
     }
-    scale = canvas.width / 1600;
+    scale = canvas.width / gameWidth;
 }
 
 //launch disc on mouse click
 canvas.addEventListener("mousedown", launchDisc, false)
 function launchDisc(event){
     discs.push(new Disc(
-        canvas.width/2,
-        canvas.height/2,
-        event.x-(canvas.width/2),
-        event.y-(canvas.height/2))
+        gameWidth/2,
+        gameHeight/2,
+        (event.x-(canvas.width/2)) / scale,
+        (event.y-(canvas.height/2)) / scale)
         )
 }
 
@@ -68,13 +70,13 @@ function drawDisc(){
         else if(d.discId==1){color=orangeGlowingRing}
         else{console.log("invalid discId")}
 
-        ctx.drawImage(color, d.x-r, d.y-r, d.radius*2, d.radius*2);
+        ctx.drawImage(color, (d.x-r)*scale, (d.y-r)*scale, d.radius*scale*2, d.radius*scale*2);
     }
 }
 
 function drawPlayer(){
     ctx.fillStyle = "blue"
-    w=50
+    w= 80 * scale
     ctx.fillRect((canvas.width/2)-(w/2), (canvas.height/2)-(w/2), w, w);
 }
 
@@ -90,13 +92,13 @@ function checkDiscCollision(){
     for(i=0;i<discs.length; i++){
         d=discs[i]
 
-        if(d.x>canvas.width || d.x<0){
+        if(d.x>gameWidth || d.x<0){
             d.xVelo*=-1;
-            d.x=Math.min(Math.max(d.x,0),canvas.width)//clamp x inside canvas
+            d.x=Math.min(Math.max(d.x,0),gameWidth)//clamp x inside game
         }
-        if(d.y>canvas.height || d.y<0){
+        if(d.y>gameHeight || d.y<0){
             d.yVelo*=-1;
-            d.y=Math.min(Math.max(d.y,0),canvas.height)//clamp y inside canvas
+            d.y=Math.min(Math.max(d.y,0),gameHeight)//clamp y inside game
         }
     }
 }
