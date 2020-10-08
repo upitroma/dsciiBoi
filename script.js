@@ -83,8 +83,8 @@ function drawPlayer(){
 function moveDisc(deltatime){
     for(i=0;i<discs.length; i++){
         d=discs[i]
-        d.x+=(d.xVelo*scale)*deltatime;
-        d.y+=(d.yVelo*scale)*deltatime;
+        d.x+=(d.xVelo)*deltatime;
+        d.y+=(d.yVelo)*deltatime;
     }
 }
 
