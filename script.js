@@ -59,6 +59,20 @@ function launchDisc(event){
         )
 }
 
+function checkBounceDecay(){
+    for(i=0;i<discs.length; i++){
+        d=discs[i]
+
+        if(d.bounceDecay==1){
+            d.discId=1;
+           
+        }
+        if(d.bounceDecay<=0){
+            discs.splice(i,1)
+        }
+    }
+}
+
 function drawBackground(){
     ctx.fillStyle = "black"
     ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -99,10 +113,15 @@ function checkDiscCollision(){
         if(d.x>gameWidth || d.x<0){
             d.xVelo*=-1;
             d.x=Math.min(Math.max(d.x,0),gameWidth)//clamp x inside game
+
+            d.bounceDecay--
+
         }
         if(d.y>gameHeight || d.y<0){
             d.yVelo*=-1;
             d.y=Math.min(Math.max(d.y,0),gameHeight)//clamp y inside game
+
+            d.bounceDecay--
         }
     }
 }
@@ -116,6 +135,7 @@ function update(deltatime){
     ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
 
     checkDiscCollision()
+    checkBounceDecay()
     moveDisc(deltatime)
     drawBackground()
     drawPlayer()//if we decide to make player static, it could just become a part of the background
