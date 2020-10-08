@@ -14,12 +14,15 @@ var orangeGlowingRing = new Image();
 orangeGlowingRing.src = "assets/orangeGlowingRing.png"
 
 class Disc{
-    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=0){
+    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=0, bounceDecay=3){
         this.x=x
         this.y=y
         this.radius=40
 
         this.discId=discId
+
+        //number of bounces
+        this.bounceDecay=bounceDecay;
     
         // pixels/second
         this.xVelo=xVelo
