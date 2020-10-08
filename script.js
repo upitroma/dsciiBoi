@@ -1,4 +1,5 @@
 //canvas setup
+//git push test
 var canvas = document.getElementById('canvas')
 var ctx = canvas.getContext('2d');
 var gameWidth = 1600;
