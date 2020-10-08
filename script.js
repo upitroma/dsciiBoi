@@ -62,11 +62,7 @@ function launchDisc(event){
 function checkBounceDecay(){
     for(i=0;i<discs.length; i++){
         d=discs[i]
-
-        if(d.bounceDecay==1){
-            d.discId=1;
-           
-        }
+        
         if(d.bounceDecay<=0){
             discs.splice(i,1)
         }
