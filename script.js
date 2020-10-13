@@ -1,5 +1,4 @@
 //canvas setup
-//git push test
 var canvas = document.getElementById('canvas')
 var ctx = canvas.getContext('2d');
 var gameWidth = 1600;
@@ -32,8 +31,6 @@ class Disc{
 }
 var discs=[]
 
-//just for testing, will normally be populated at runtime
-//discs.push(new Disc(), new Disc(50, 50, 600, 500, 1))
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
