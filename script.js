@@ -32,6 +32,16 @@ class Disc{
 }
 var discs=[]
 
+class Obsticle{
+    constructor(centerX,centerY,width,height,angle){
+        this.centerX=centerX;
+        this.centerY=centerY;
+        this.width=width;
+        this.height=height;
+        this.angle=angle;
+    }
+}
+var Obsticles=[new Obsticle(400,400,100,300,30)]
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -55,6 +65,18 @@ function launchDisc(event){
         ((event.x-((window.innerWidth-canvas.width)/2))-(canvas.width/2)) / scale,
         ((event.y-((window.innerHeight-canvas.height)/2))-(canvas.height/2)) / scale)
         )
+}
+
+function drawRectangle(x,y,width,height,angle){
+    ctx.translate(x, y);
+    ctx.rotate(angle*(Math.PI/180));
+    ctx.fillRect(width/2, height/2, width, height);
+}
+
+function drawObjects(){
+    for(i=0;i<objects.length; i++){
+        //drawRectangle
+    }
 }
 
 function checkBounceDecay(){
