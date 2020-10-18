@@ -22,8 +22,7 @@ class Disc{
 
         this.discId=discId
 
-        //number of bounces
-        this.bounceDecay=bounceDecay;
+        this.bounceDecay=bounceDecay;//number of bounces
     
         // pixels/second
         this.xVelo=xVelo
@@ -64,7 +63,7 @@ function launchDisc(event){
         gameHeight/2,
         ((event.x-((window.innerWidth-canvas.width)/2))-(canvas.width/2)) / scale,
         ((event.y-((window.innerHeight-canvas.height)/2))-(canvas.height/2)) / scale)
-        )
+    )
 }
 
 function drawRectangle(x,y,width,height,angle){
@@ -77,7 +76,13 @@ function drawRectangle(x,y,width,height,angle){
 function drawWalls(){
     for(i=0;i<walls.length; i++){
         w=walls[i];
-        drawRectangle(w.centerX*scale,w.centerY*scale,w.width*scale,w.height*scale,w.angle)
+        drawRectangle(
+            w.centerX*scale,
+            w.centerY*scale,
+            w.width*scale,
+            w.height*scale,
+            w.angle
+        )
     }
 }
 
@@ -131,14 +136,11 @@ function checkDiscCollision(){
         if(d.x>gameWidth || d.x<0){
             d.xVelo*=-1;
             d.x=Math.min(Math.max(d.x,0),gameWidth)//clamp x inside game
-
             d.bounceDecay--
-
         }
         if(d.y>gameHeight || d.y<0){
             d.yVelo*=-1;
             d.y=Math.min(Math.max(d.y,0),gameHeight)//clamp y inside game
-
             d.bounceDecay--
         }
     }
@@ -149,18 +151,19 @@ function checkDiscCollision(){
 //update loop
 //runs every frame
 function update(deltatime){
-
     ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
 
     checkDiscCollision()
     checkBounceDecay()
     moveDisc(deltatime)
+
+    //graphic layers
     drawBackground()
-    drawPlayer()//if we decide to make player static, it could just become a part of the background
-    walls[0].angle+=deltatime*30
+    drawPlayer()
     drawWalls()
     drawDisc()
     
+    walls[0].angle+=deltatime*30//DEBUG: rotates a wall for collision testing
 }
   
 //tick
