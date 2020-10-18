@@ -1,5 +1,4 @@
 //canvas setup
-//allen test2
 var canvas = document.getElementById('canvas')
 var ctx = canvas.getContext('2d');
 var gameWidth = 1600;
@@ -15,7 +14,7 @@ var orangeGlowingRing = new Image();
 orangeGlowingRing.src = "assets/orangeGlowingRing.png"
 
 class Disc{
-    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=0, bounceDecay=3){
+    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=0, bounceDecay=1){
         this.x=x
         this.y=y
         this.radius=40
@@ -38,6 +37,9 @@ class Wall{
         this.width=width;
         this.height=height;
         this.angle=angle;
+        this.color=0;
+
+        this.discInside=false;//DEBUGGING
     }
 }
 var walls=[new Wall(400,400,100,300,0)]
@@ -67,15 +69,22 @@ function launchDisc(event){
 }
 
 function drawRectangle(x,y,width,height,angle){
-    ctx.translate(x+(width/2), (y+height/2));
-    ctx.rotate(angle*(Math.PI/180));
+    ctx.translate(x+(width/2), (y+(height/2)));
+    ctx.rotate(angle);
     ctx.fillRect(-width/2, -height/2, width, height);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 
 function drawWalls(){
     for(i=0;i<walls.length; i++){
+        
         w=walls[i];
+        if(w.color==0){
+            ctx.fillStyle = "blue"
+        }
+        else{
+            ctx.fillStyle = "red"
+        }
         drawRectangle(
             w.centerX*scale,
             w.centerY*scale,
@@ -133,6 +142,7 @@ function checkDiscCollision(){
     for(i=0;i<discs.length; i++){
         d=discs[i]
 
+        //edges of screen
         if(d.x>gameWidth || d.x<0){
             d.xVelo*=-1;
             d.x=Math.min(Math.max(d.x,0),gameWidth)//clamp x inside game
@@ -142,6 +152,35 @@ function checkDiscCollision(){
             d.yVelo*=-1;
             d.y=Math.min(Math.max(d.y,0),gameHeight)//clamp y inside game
             d.bounceDecay--
+        }
+
+        //console.log(d.x)
+        //if((d.x<(w.centerX+(w.width)))){//WHY IS x.width NOT HALVED???!!!!!
+        //    console.log("x is good")
+        //}
+
+
+        for(j=0;j<walls.length;j++){
+            w=walls[j]
+
+            //rotate point around rectangle center
+            rotatedX = (Math.cos(w.angle)*(d.x-w.centerX)-Math.sin(w.angle)*(d.y-w.centerY)) + w.centerX;
+            rotatedY = (Math.sin(w.angle)*(d.x-w.centerX)-Math.cos(w.angle)*(d.y-w.centerY)) + w.centerY;
+
+            //console.log(Math.abs(rotatedX-w.centerX))
+
+            if(Math.abs(rotatedX-w.centerX)<(w.width/2)){//if x is contained
+                //console.log("omg it worked!")
+                w.color=1
+            }
+            else{
+                w.color=0
+
+            }
+
+            if((w.centerY-w.height)<rotatedY && rotatedY<(w.centerY)){
+                //console.log("omg it worked!")
+            }
         }
     }
 }
@@ -163,7 +202,7 @@ function update(deltatime){
     drawWalls()
     drawDisc()
     
-    walls[0].angle+=deltatime*30//DEBUG: rotates a wall for collision testing
+    //walls[0].angle+=deltatime*30//DEBUG: rotates a wall for collision testing
 }
   
 //tick
