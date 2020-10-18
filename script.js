@@ -32,7 +32,7 @@ class Disc{
 }
 var discs=[]
 
-class Obsticle{
+class Wall{
     constructor(centerX,centerY,width,height,angle){
         this.centerX=centerX;
         this.centerY=centerY;
@@ -41,7 +41,7 @@ class Obsticle{
         this.angle=angle;
     }
 }
-var obsticles=[new Obsticle(400,400,100,300,0)]
+var walls=[new Wall(400,400,100,300,0)]
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -74,10 +74,10 @@ function drawRectangle(x,y,width,height,angle){
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 
-function drawObjects(){
-    for(i=0;i<obsticles.length; i++){
-        o=obsticles[i];
-        drawRectangle(o.centerX*scale,o.centerY*scale,o.width*scale,o.height*scale,o.angle)
+function drawWalls(){
+    for(i=0;i<walls.length; i++){
+        w=walls[i];
+        drawRectangle(w.centerX*scale,w.centerY*scale,w.width*scale,w.height*scale,w.angle)
     }
 }
 
@@ -157,8 +157,8 @@ function update(deltatime){
     moveDisc(deltatime)
     drawBackground()
     drawPlayer()//if we decide to make player static, it could just become a part of the background
-    obsticles[0].angle+=deltatime*30
-    drawObjects()
+    walls[0].angle+=deltatime*30
+    drawWalls()
     drawDisc()
     
 }
