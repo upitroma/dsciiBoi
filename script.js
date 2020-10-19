@@ -42,7 +42,7 @@ class Wall{
         this.discInside=false;//DEBUGGING
     }
 }
-var walls=[new Wall(400,400,100,300,0)]
+var walls=[new Wall(1200,400,100,500,.5), new Wall(400,100,200,100,.4)]
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -69,8 +69,8 @@ function launchDisc(event){
 }
 
 function drawRectangle(x,y,width,height,angle){
-    ctx.translate(x+(width/2), (y+(height/2)));
-    ctx.rotate(angle);
+    ctx.translate(x, (y));//problem?
+    ctx.rotate(-angle);
     ctx.fillRect(-width/2, -height/2, width, height);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
@@ -137,7 +137,7 @@ function moveDisc(deltatime){
         d.y+=(d.yVelo)*deltatime;
     }
 }
-
+console.log(walls[0].centerX+(walls[0].width/2))
 function checkDiscCollision(){
     for(i=0;i<discs.length; i++){
         d=discs[i]
@@ -170,17 +170,20 @@ function checkDiscCollision(){
             //console.log(Math.abs(rotatedX-w.centerX))
 
             if(Math.abs(rotatedX-w.centerX)<(w.width/2)){//if x is contained
-                //console.log("omg it worked!")
-                w.color=1
+                //console.log("test")
+                if(Math.abs(rotatedY-w.centerY)<(w.height/2)){
+                    w.color=1
+                }
+                else{
+                    w.color=0
+    
+                }
             }
             else{
                 w.color=0
-
             }
 
-            if((w.centerY-w.height)<rotatedY && rotatedY<(w.centerY)){
-                //console.log("omg it worked!")
-            }
+            
         }
     }
 }
@@ -195,6 +198,8 @@ function update(deltatime){
     checkDiscCollision()
     checkBounceDecay()
     moveDisc(deltatime)
+
+    walls[0].angle+=deltatime
 
     //graphic layers
     drawBackground()
