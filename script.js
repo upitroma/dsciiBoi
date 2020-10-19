@@ -42,7 +42,7 @@ class Wall{
         this.discInside=false;//DEBUGGING
     }
 }
-var walls=[new Wall(1200,400,100,500,.5), new Wall(400,100,200,100,.4)]
+var walls=[new Wall(1200,400,100,500,1*5*Math.PI/8)]
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -69,7 +69,7 @@ function launchDisc(event){
 }
 
 function drawRectangle(x,y,width,height,angle){
-    ctx.translate(x, (y));//problem?
+    ctx.translate(x, y);
     ctx.rotate(-angle);
     ctx.fillRect(-width/2, -height/2, width, height);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -154,23 +154,17 @@ function checkDiscCollision(){
             d.bounceDecay--
         }
 
-        //console.log(d.x)
-        //if((d.x<(w.centerX+(w.width)))){//WHY IS x.width NOT HALVED???!!!!!
-        //    console.log("x is good")
-        //}
-
 
         for(j=0;j<walls.length;j++){
             w=walls[j]
 
             //rotate point around rectangle center
             rotatedX = (Math.cos(w.angle)*(d.x-w.centerX)-Math.sin(w.angle)*(d.y-w.centerY)) + w.centerX;
-            rotatedY = (Math.sin(w.angle)*(d.x-w.centerX)-Math.cos(w.angle)*(d.y-w.centerY)) + w.centerY;
+            rotatedY = (Math.sin(w.angle)*(d.x-w.centerX)+Math.cos(w.angle)*(d.y-w.centerY)) + w.centerY;
 
             //console.log(Math.abs(rotatedX-w.centerX))
 
             if(Math.abs(rotatedX-w.centerX)<(w.width/2)){//if x is contained
-                //console.log("test")
                 if(Math.abs(rotatedY-w.centerY)<(w.height/2)){
                     w.color=1
                 }
@@ -199,7 +193,7 @@ function update(deltatime){
     checkBounceDecay()
     moveDisc(deltatime)
 
-    walls[0].angle+=deltatime
+    //walls[0].angle+=deltatime
 
     //graphic layers
     drawBackground()
