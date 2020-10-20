@@ -170,24 +170,29 @@ function checkDiscCollision(){
                     discAngle=Math.atan2(rotatedY-w.centerY,rotatedX-w.centerX)
 
                     rectTR=Math.atan2(w.height/2,w.width/2)     
-                    perpAngle;        
+                    perpAngle=0;        
 
                     if(Math.abs(discAngle-Math.PI)<rectTR){
                         console.log("right")
+                        perpAngle=Math.PI;
                     }
                     else if(Math.abs(discAngle)<rectTR  || Math.abs(discAngle-(2*Math.PI))<rectTR){
                         console.log("left")
+                        perpAngle=0;
                     }
                     else if(Math.abs(discAngle-(Math.PI/2))<rectTR){
                         console.log("top")
+                        perpAngle=Math.PI/2;
                     }
                     else if(Math.abs(discAngle+((Math.PI/2)))<rectTR){
                         console.log("bottom")
+                        perpAngle=3*(Math.PI/2);
+
                     }
                     else{
                         console.log("um...")
                     }
-                    console.log(discAngle)
+                    console.log(perpAngle)
                 }
                 else{
                     w.color=0
@@ -211,7 +216,7 @@ function update(deltatime){
     checkBounceDecay()
     moveDisc(deltatime)
 
-    //walls[0].angle+=deltatime*5
+    walls[0].angle+=deltatime*5
 
     //graphic layers
     drawBackground()
