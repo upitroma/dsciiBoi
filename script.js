@@ -170,23 +170,23 @@ function checkDiscCollision(){
                     discAngle=Math.atan2(rotatedY-w.centerY,rotatedX-w.centerX)
 
                     rectTR=Math.atan2(w.height/2,w.width/2)     
-                    perpAngle=0;        
+                    perpAngle=w.angle;
 
                     if(Math.abs(discAngle-Math.PI)<rectTR){
                         console.log("right")
-                        perpAngle=Math.PI;
+                        perpAngle=Math.PI+w.angle;
                     }
                     else if(Math.abs(discAngle)<rectTR  || Math.abs(discAngle-(2*Math.PI))<rectTR){
                         console.log("left")
-                        perpAngle=0;
+                        perpAngle=w.angle;
                     }
                     else if(Math.abs(discAngle-(Math.PI/2))<rectTR){
                         console.log("top")
-                        perpAngle=Math.PI/2;
+                        perpAngle=(Math.PI/2)+w.angle;
                     }
                     else if(Math.abs(discAngle+((Math.PI/2)))<rectTR){
                         console.log("bottom")
-                        perpAngle=3*(Math.PI/2);
+                        perpAngle=(3*(Math.PI/2))+w.angle;
 
                     }
                     else{
