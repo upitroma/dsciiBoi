@@ -40,7 +40,7 @@ class Wall{
         this.color=0;
     }
 }
-var walls=[new Wall(1200,400,100,500,1*5*Math.PI/8)]
+var walls=[new Wall(1200,400,100,500,1*8*Math.PI/8)]
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -162,7 +162,28 @@ function checkDiscCollision(){
 
             if(Math.abs(rotatedX-w.centerX)<(w.width/2)){//if x is contained
                 if(Math.abs(rotatedY-w.centerY)<(w.height/2)){//if y is contained
+                    //disc is inside wall
                     w.color=1
+                    discAngle=Math.atan2(rotatedY-w.centerY,rotatedX-w.centerX)
+
+                    rectTR=Math.atan2(w.height/2,w.width/2)             
+
+                    if(Math.abs(discAngle-Math.PI)<rectTR){
+                        console.log("right")
+                    }
+                    else if(Math.abs(discAngle)<rectTR  || Math.abs(discAngle-(2*Math.PI))<rectTR){
+                        console.log("left")
+                    }
+                    else if(Math.abs(discAngle-(Math.PI/2))<rectTR){
+                        console.log("top")
+                    }
+                    else if(Math.abs(discAngle+((Math.PI/2)))<rectTR){
+                        console.log("bottom")
+                    }
+                    else{
+                        console.log("um...")
+                    }
+                    console.log(discAngle)
                 }
                 else{
                     w.color=0
