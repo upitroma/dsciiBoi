@@ -164,9 +164,13 @@ function checkDiscCollision(){
                 if(Math.abs(rotatedY-w.centerY)<(w.height/2)){//if y is contained
                     //disc is inside wall
                     w.color=1
+
+
+                    //find the correct edge and perpendicular angle
                     discAngle=Math.atan2(rotatedY-w.centerY,rotatedX-w.centerX)
 
-                    rectTR=Math.atan2(w.height/2,w.width/2)             
+                    rectTR=Math.atan2(w.height/2,w.width/2)     
+                    perpAngle;        
 
                     if(Math.abs(discAngle-Math.PI)<rectTR){
                         console.log("right")
