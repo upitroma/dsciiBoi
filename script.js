@@ -14,7 +14,7 @@ var orangeGlowingRing = new Image();
 orangeGlowingRing.src = "assets/orangeGlowingRing.png"
 
 class Disc{
-    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=0, bounceDecay=1){
+    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=0, bounceDecay=3){
         this.x=x
         this.y=y
         this.radius=40
@@ -38,8 +38,6 @@ class Wall{
         this.height=height;
         this.angle=angle;
         this.color=0;
-
-        this.discInside=false;//DEBUGGING
     }
 }
 var walls=[new Wall(1200,400,100,500,1*5*Math.PI/8)]
@@ -70,7 +68,7 @@ function launchDisc(event){
 
 function drawRectangle(x,y,width,height,angle){
     ctx.translate(x, y);
-    ctx.rotate(-angle);
+    ctx.rotate(-angle);//negative, so when ctx is reset it's normal
     ctx.fillRect(-width/2, -height/2, width, height);
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
@@ -162,22 +160,17 @@ function checkDiscCollision(){
             rotatedX = (Math.cos(w.angle)*(d.x-w.centerX)-Math.sin(w.angle)*(d.y-w.centerY)) + w.centerX;
             rotatedY = (Math.sin(w.angle)*(d.x-w.centerX)+Math.cos(w.angle)*(d.y-w.centerY)) + w.centerY;
 
-            //console.log(Math.abs(rotatedX-w.centerX))
-
             if(Math.abs(rotatedX-w.centerX)<(w.width/2)){//if x is contained
-                if(Math.abs(rotatedY-w.centerY)<(w.height/2)){
+                if(Math.abs(rotatedY-w.centerY)<(w.height/2)){//if y is contained
                     w.color=1
                 }
                 else{
                     w.color=0
-    
                 }
             }
             else{
                 w.color=0
             }
-
-            
         }
     }
 }
@@ -193,7 +186,7 @@ function update(deltatime){
     checkBounceDecay()
     moveDisc(deltatime)
 
-    //walls[0].angle+=deltatime
+    //walls[0].angle+=deltatime*5
 
     //graphic layers
     drawBackground()
@@ -201,7 +194,6 @@ function update(deltatime){
     drawWalls()
     drawDisc()
     
-    //walls[0].angle+=deltatime*30//DEBUG: rotates a wall for collision testing
 }
   
 //tick
