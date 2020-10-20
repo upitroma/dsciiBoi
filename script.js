@@ -12,9 +12,11 @@ var blueGlowingRing = new Image();
 blueGlowingRing.src = "assets/blueGlowingRing.png"
 var orangeGlowingRing = new Image();
 orangeGlowingRing.src = "assets/orangeGlowingRing.png"
+var soccerBall = new Image();
+soccerBall.src="assets/scott_ball_shiny.png"
 
 class Disc{
-    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=0, bounceDecay=3){
+    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=2, bounceDecay=3){
         this.x=x
         this.y=y
         this.radius=40
@@ -116,6 +118,7 @@ function drawDisc(){
         //set color based on discId
         if(d.discId==0){color=blueGlowingRing}
         else if(d.discId==1){color=orangeGlowingRing}
+        else if(d.discId==2){color=soccerBall}
         else{console.log("invalid discId")}
 
         ctx.drawImage(color, (d.x-r)*scale, (d.y-r)*scale, d.radius*scale*2, d.radius*scale*2);
