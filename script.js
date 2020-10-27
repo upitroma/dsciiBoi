@@ -12,11 +12,11 @@ var blueGlowingRing = new Image();
 blueGlowingRing.src = "assets/blueGlowingRing.png"
 var orangeGlowingRing = new Image();
 orangeGlowingRing.src = "assets/orangeGlowingRing.png"
-var soccerBall = new Image();
-soccerBall.src="assets/scott_ball_shiny.png"
+//var soccerBall = new Image();
+//soccerBall.src="assets/scott_ball_shiny.png"
 
 class Disc{
-    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=2, bounceDecay=3){
+    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=1, bounceDecay=3){
         this.x=x
         this.y=y
         this.radius=40
@@ -42,7 +42,7 @@ class Wall{
         this.color=0;
     }
 }
-var walls=[new Wall(1200,400,100,500,1*8*Math.PI/8)]
+var walls=[new Wall(1200,400,200,200,1*1*Math.PI/8)]
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -118,7 +118,7 @@ function drawDisc(){
         //set color based on discId
         if(d.discId==0){color=blueGlowingRing}
         else if(d.discId==1){color=orangeGlowingRing}
-        else if(d.discId==2){color=soccerBall}
+        //else if(d.discId==2){color=soccerBall}
         else{console.log("invalid discId")}
 
         ctx.drawImage(color, (d.x-r)*scale, (d.y-r)*scale, d.radius*scale*2, d.radius*scale*2);
@@ -163,49 +163,35 @@ function checkDiscCollision(){
             rotatedX = (Math.cos(w.angle)*(d.x-w.centerX)-Math.sin(w.angle)*(d.y-w.centerY)) + w.centerX;
             rotatedY = (Math.sin(w.angle)*(d.x-w.centerX)+Math.cos(w.angle)*(d.y-w.centerY)) + w.centerY;
 
-            if(Math.abs(rotatedX-w.centerX)<(w.width/2)){//if x is contained
-                if(Math.abs(rotatedY-w.centerY)<(w.height/2)){//if y is contained
-                    //disc is inside wall
-                    w.color=1
+            if(Math.abs(rotatedX-w.centerX)<(w.width/2)&&(Math.abs(rotatedY-w.centerY)<(w.height/2))){//if x is contained
+                w.color=1; 
+
+                //bounce
+                discRelativeAngle=deltaAngle(w.centerX,w.centerY,w.angle,d.x-w.centerX,d.y-w.centerY)
 
 
-                    //find the correct edge and perpendicular angle
-                    discAngle=Math.atan2(rotatedY-w.centerY,rotatedX-w.centerX)
 
-                    rectTR=Math.atan2(w.height/2,w.width/2)     
-                    perpAngle=w.angle;
 
-                    if(Math.abs(discAngle-Math.PI)<rectTR){
-                        console.log("right")
-                        perpAngle=Math.PI+w.angle;
-                    }
-                    else if(Math.abs(discAngle)<rectTR  || Math.abs(discAngle-(2*Math.PI))<rectTR){
-                        console.log("left")
-                        perpAngle=w.angle;
-                    }
-                    else if(Math.abs(discAngle-(Math.PI/2))<rectTR){
-                        console.log("top")
-                        perpAngle=(Math.PI/2)+w.angle;
-                    }
-                    else if(Math.abs(discAngle+((Math.PI/2)))<rectTR){
-                        console.log("bottom")
-                        perpAngle=(3*(Math.PI/2))+w.angle;
 
-                    }
-                    else{
-                        console.log("um...")
-                    }
-                    console.log(perpAngle)
-                }
-                else{
-                    w.color=0
-                }
             }
             else{
                 w.color=0
             }
         }
     }
+}
+
+
+//https://gamedev.stackexchange.com/questions/114898/frustum-culling-how-to-calculate-if-an-angle-is-between-another-two-angles
+function deltaAngle(px,py,pa,objx,objy){
+    var l1x=objx-px
+    var l1y=objy-py
+    var l1mag=Math.sqrt((l1x*l1x) + (l1y*l1y))
+    var l2x=Math.cos(pa)
+    var l2y=Math.sin(pa)
+    var dot=(l1x*l2x) + (l1y*l2y)
+    var deltaAngle=Math.acos(dot/l1mag)
+    return deltaAngle
 }
 
 
@@ -218,7 +204,7 @@ function update(deltatime){
     checkBounceDecay()
     moveDisc(deltatime)
 
-    walls[0].angle+=deltatime*5
+    //walls[0].angle+=deltatime*5
 
     //graphic layers
     drawBackground()
