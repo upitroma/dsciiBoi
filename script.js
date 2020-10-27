@@ -170,8 +170,58 @@ function checkDiscCollision(){
 
 
                     //find the correct edge and perpendicular angle
-                    //discAngle=Math.atan2(rotatedY-w.centerY,rotatedX-w.centerX)
-                    discAngleRelative=deltaAngle(w.centerX,w.centerY,w.angle,d.x,d.y)
+                    discAngle=Math.atan2(rotatedY-w.centerY,rotatedX-w.centerX)
+                    N=deltaAngle(w.centerX,w.centerY,w.angle,d.x,d.y)
+
+                    if(Math.abs(discAngle-Math.PI)<rectTR){
+                        console.log("right")
+                        perpAngle=Math.PI+w.angle;
+                    }
+                    else if(Math.abs(discAngle)<rectTR  || Math.abs(discAngle-(2*Math.PI))<rectTR){
+                        console.log("left")
+                        perpAngle=w.angle;
+                    }
+                    else if(Math.abs(discAngle-(Math.PI/2))<rectTR){
+                        console.log("top")
+                        perpAngle=(Math.PI/2)+w.angle;
+                    }
+                    else if(Math.abs(discAngle+((Math.PI/2)))<rectTR){
+                        console.log("bottom")
+                        perpAngle=(3*(Math.PI/2))+w.angle;
+
+                    }
+                    else{
+                        console.log("um...")
+                    }
+
+                    nVelocity=1;
+                    nYvelocity=1;
+                    nXvelocity=1;
+
+                    if(0 < N < 90)
+                    {
+                        nYvelocity = Math.sin(N)
+                        nXvelocity = Math.cos(N)
+                    }   
+
+                    else if(90 < N < 180)
+                    {
+                        nYvelocity = Math.cos(N-90)
+                        nXvelocity = -Math.sin(N-90)
+                    }
+                    else if(180 < N < 270)
+                    {
+                        nYvelocity = -Math.sin(N-180)
+                        nXvelocity = -Math.cos(N-180)
+                    }
+                    else if(270 < N < 360)
+                    {
+                        nYvelocity = -Math.cos(N-270)
+                        nXvelocity = Math.sin(N-270)
+                    }
+                    //insert dot product
+                    dot= vector1.x * vector2.x + vector1.y * vector2.y;
+                
 
                     //rectTR=Math.atan2(w.height/2,w.width/2)     
                     //perpAngle=w.angle;
