@@ -208,18 +208,6 @@ function checkDiscCollision(){
     }
 }
 
-//https://gamedev.stackexchange.com/questions/114898/frustum-culling-how-to-calculate-if-an-angle-is-between-another-two-angles
-function deltaAngle(px,py,pa,objx,objy){
-    var l1x=objx-px
-    var l1y=objy-py
-    var l1mag=Math.sqrt((l1x*l1x) + (l1y*l1y))
-    var l2x=Math.cos(pa)
-    var l2y=Math.sin(pa)
-    var dot=(l1x*l2x) + (l1y*l2y)
-    var deltaAngle=Math.acos(dot/l1mag)
-    return deltaAngle
-}
-
 
 //update loop
 //runs every frame
