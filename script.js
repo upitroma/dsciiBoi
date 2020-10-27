@@ -171,62 +171,9 @@ function checkDiscCollision(){
 
                     //find the correct edge and perpendicular angle
                     discAngle=Math.atan2(rotatedY-w.centerY,rotatedX-w.centerX)
-                    N=deltaAngle(w.centerX,w.centerY,w.angle,d.x,d.y)
 
-                    if(Math.abs(discAngle-Math.PI)<rectTR){
-                        console.log("right")
-                        perpAngle=Math.PI+w.angle;
-                    }
-                    else if(Math.abs(discAngle)<rectTR  || Math.abs(discAngle-(2*Math.PI))<rectTR){
-                        console.log("left")
-                        perpAngle=w.angle;
-                    }
-                    else if(Math.abs(discAngle-(Math.PI/2))<rectTR){
-                        console.log("top")
-                        perpAngle=(Math.PI/2)+w.angle;
-                    }
-                    else if(Math.abs(discAngle+((Math.PI/2)))<rectTR){
-                        console.log("bottom")
-                        perpAngle=(3*(Math.PI/2))+w.angle;
-
-                    }
-                    else{
-                        console.log("um...")
-                    }
-
-                    nVelocity=1;
-                    nYvelocity=1;
-                    nXvelocity=1;
-
-                    if(0 < N < 90)
-                    {
-                        nYvelocity = Math.sin(N)
-                        nXvelocity = Math.cos(N)
-                    }   
-
-                    else if(90 < N < 180)
-                    {
-                        nYvelocity = Math.cos(N-90)
-                        nXvelocity = -Math.sin(N-90)
-                    }
-                    else if(180 < N < 270)
-                    {
-                        nYvelocity = -Math.sin(N-180)
-                        nXvelocity = -Math.cos(N-180)
-                    }
-                    else if(270 < N < 360)
-                    {
-                        nYvelocity = -Math.cos(N-270)
-                        nXvelocity = Math.sin(N-270)
-                    }
-                    //insert dot product
-                    dot= vector1.x * vector2.x + vector1.y * vector2.y;
-                
-
-                    //rectTR=Math.atan2(w.height/2,w.width/2)     
-                    //perpAngle=w.angle;
-
-                    /*
+                    rectTR=Math.atan2(w.height/2,w.width/2)     
+                    perpAngle=w.angle;
 
                     if(Math.abs(discAngle-Math.PI)<rectTR){
                         console.log("right")
@@ -249,9 +196,6 @@ function checkDiscCollision(){
                         console.log("um...")
                     }
                     console.log(perpAngle)
-
-
-                    */
                 }
                 else{
                     w.color=0
@@ -262,18 +206,6 @@ function checkDiscCollision(){
             }
         }
     }
-}
-
-//https://gamedev.stackexchange.com/questions/114898/frustum-culling-how-to-calculate-if-an-angle-is-between-another-two-angles
-function deltaAngle(px,py,pa,objx,objy){
-    var l1x=objx-px
-    var l1y=objy-py
-    var l1mag=Math.sqrt((l1x*l1x) + (l1y*l1y))
-    var l2x=Math.cos(pa)
-    var l2y=Math.sin(pa)
-    var dot=(l1x*l2x) + (l1y*l2y)
-    var deltaAngle=Math.acos(dot/l1mag)
-    return deltaAngle
 }
 
 
