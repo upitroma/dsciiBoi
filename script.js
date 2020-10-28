@@ -16,7 +16,7 @@ orangeGlowingRing.src = "assets/orangeGlowingRing.png"
 //soccerBall.src="assets/scott_ball_shiny.png"
 
 class Disc{
-    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=1, bounceDecay=3){
+    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=1, bounceDecay=1){
         this.x=x
         this.y=y
         this.radius=40
@@ -42,7 +42,7 @@ class Wall{
         this.color=0;
     }
 }
-var walls=[new Wall(1200,400,200,200,1*1*Math.PI/8)]
+var walls=[new Wall(800,450,200,200,4*Math.PI/8)]
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -138,7 +138,6 @@ function moveDisc(deltatime){
         d.y+=(d.yVelo)*deltatime;
     }
 }
-console.log(walls[0].centerX+(walls[0].width/2))
 function checkDiscCollision(){
     for(i=0;i<discs.length; i++){
         d=discs[i]
@@ -167,8 +166,8 @@ function checkDiscCollision(){
                 w.color=1; 
 
                 //bounce
-                discRelativeAngle=deltaAngle(w.centerX,w.centerY,w.angle,d.x-w.centerX,d.y-w.centerY)
-
+                discRelativeAngle=Math.atan2(rotatedX-w.centerX,rotatedY-w.centerY)
+                console.log(discRelativeAngle)
 
 
 
@@ -193,7 +192,6 @@ function deltaAngle(px,py,pa,objx,objy){
     var deltaAngle=Math.acos(dot/l1mag)
     return deltaAngle
 }
-
 
 //update loop
 //runs every frame
