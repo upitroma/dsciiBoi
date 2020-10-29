@@ -24,7 +24,7 @@ class Disc{
         this.discId=discId
 
         this.bounceDecay=bounceDecay;//number of bounces
-    
+   
         // pixels/second
         this.xVelo=xVelo
         this.yVelo=yVelo
@@ -42,7 +42,7 @@ class Wall{
         this.color=0;
     }
 }
-var walls=[new Wall(800,450,200,200,4*Math.PI/8)]
+var walls=[new Wall(1000,450,400,100,2*Math.PI/8)]
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -77,7 +77,7 @@ function drawRectangle(x,y,width,height,angle){
 
 function drawWalls(){
     for(i=0;i<walls.length; i++){
-        
+       
         w=walls[i];
         if(w.color==0){
             ctx.fillStyle = "blue"
@@ -98,7 +98,7 @@ function drawWalls(){
 function checkBounceDecay(){
     for(i=0;i<discs.length; i++){
         d=discs[i]
-        
+       
         if(d.bounceDecay<=0){
             discs.splice(i,1)
         }
@@ -163,13 +163,30 @@ function checkDiscCollision(){
             rotatedY = (Math.sin(w.angle)*(d.x-w.centerX)+Math.cos(w.angle)*(d.y-w.centerY)) + w.centerY;
 
             if(Math.abs(rotatedX-w.centerX)<(w.width/2)&&(Math.abs(rotatedY-w.centerY)<(w.height/2))){//if x is contained
-                w.color=1; 
+                w.color=1;
 
                 //bounce
-                discRelativeAngle=Math.atan2(rotatedX-w.centerX,rotatedY-w.centerY)
+                discRelativeAngle=Math.atan2(rotatedY-w.centerY,rotatedX-w.centerX)
                 console.log(discRelativeAngle)
 
-
+                regionAngle=Math.atan2(w.height/2,w.width/2)
+               
+                //figure out which side it's on
+                if(discRelativeAngle<regionAngle&&discRelativeAngle>-regionAngle){
+                    console.log("right")
+                }
+                else if(discRelativeAngle<Math.PI-regionAngle&&discRelativeAngle>regionAngle){
+                    console.log("bottom")
+                }
+                else if((discRelativeAngle<Math.PI&&discRelativeAngle>Math.PI-regionAngle)||(discRelativeAngle>-Math.PI&&discRelativeAngle<regionAngle-Math.PI)){
+                    console.log("left")
+                }
+                else if(discRelativeAngle<-regionAngle&&discRelativeAngle>regionAngle-Math.PI){
+                    console.log("top")
+                }
+                else{
+                    console.log("corner or center or error")
+                }
 
 
             }
@@ -209,9 +226,9 @@ function update(deltatime){
     drawPlayer()
     drawWalls()
     drawDisc()
-    
+   
 }
-  
+ 
 //tick
 //makes the update function run every frame
 var lastTick = performance.now()
