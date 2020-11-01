@@ -42,7 +42,7 @@ class Wall{
         this.color=0;
     }
 }
-var walls=[new Wall(800,200,300,200,11*Math.PI/8)]
+var walls=[new Wall(1300,450,300,200,8*Math.PI/8)]
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -167,16 +167,17 @@ function checkDiscCollision(deltatime){
 
                 //bounce
                 discRelativeAngle=Math.atan2(rotatedY-w.centerY,rotatedX-w.centerX)
-                console.log(discRelativeAngle)
+                console.log("relative angle before: "+discRelativeAngle)
 
 
                 discVelocityMagnitude=Math.sqrt((d.xVelo*d.xVelo)+(d.yVelo*d.yVelo))//pythagorean
 
 
                 discVelocityAngle=Math.atan2(d.yVelo,d.xVelo)
-                discVelocityAngle-=w.angle
-                discRelativeXVelo=Math.cos(discVelocityAngle)*discVelocityMagnitude
-                discRelativeYVelo=Math.sin(discVelocityAngle)*discVelocityMagnitude
+                //discVelocityAngle-=w.angle
+
+                //discRelativeXVelo=Math.cos(discVelocityAngle)*discVelocityMagnitude
+                //discRelativeYVelo=Math.sin(discVelocityAngle)*discVelocityMagnitude
 
 
 
@@ -190,28 +191,105 @@ function checkDiscCollision(deltatime){
 
                 //n=0
                 newDiscVelocityAngle=0
+
+                wallAngle=0
                
                 //figure out which side it's on
                 if(discRelativeAngle<regionAngle&&discRelativeAngle>-regionAngle){
                     console.log("right")
-                    discRelativeXVelo*=-1
+
+                    discVelocityAngle-=(w.angle+(Math.PI))
+                    a=(Math.PI/2)-discVelocityAngle
+                    if(a>(Math.PI/2)){
+                        a=(Math.PI/2)+discVelocityAngle
+                        flip=true
+                    }
+
+                    if(flip){
+                        a*=-1
+                    }
+                    a+=w.angle
+                    newDiscVelocityAngle=a+(Math.PI)
+                    //discRelativeXVelo*=-1
+                    
+                    
                     //n=Math.PI
+
+
                 }
                 else if(discRelativeAngle<Math.PI-regionAngle&&discRelativeAngle>regionAngle){
                     console.log("bottom")
-                    discRelativeYVelo*=-1
+
+
+                    discVelocityAngle-=(w.angle+(Math.PI/2))
+                    a=(Math.PI/2)-discVelocityAngle
+                    if(a>(Math.PI/2)){
+                        a=(Math.PI/2)+discVelocityAngle
+                        flip=true
+                    }
+
+                    if(flip){
+                        a*=-1
+                    }
+                    a+=w.angle
+                    newDiscVelocityAngle=a+(Math.PI/2)
+
+                    
+                    //discRelativeYVelo*=-1
+
+                    //wallAngle=0-discVelocityAngle
+
 
                    // n=Math.PI/2
                 }
                 else if((discRelativeAngle<Math.PI&&discRelativeAngle>Math.PI-regionAngle)||(discRelativeAngle>-Math.PI&&discRelativeAngle<regionAngle-Math.PI)){
                     console.log("left")
-                    discRelativeXVelo*=-1
+
+
+                    discVelocityAngle-=w.angle
+                    a=(Math.PI/2)-discVelocityAngle
+                    if(a>(Math.PI/2)){
+                        a=(Math.PI/2)+discVelocityAngle
+                        flip=true
+                    }
+
+                    if(flip){
+                        a*=-1
+                    }
+                    a+=w.angle
+                    newDiscVelocityAngle=a
+
+
+                    //discRelativeXVelo*=-1
+
+                    //wallAngle=90-discVelocityAngle
+
 
                    // n=0
                 }
                 else if(discRelativeAngle<-regionAngle&&discRelativeAngle>regionAngle-Math.PI){
                     console.log("top")
-                    discRelativeYVelo*=-1
+
+
+                    discVelocityAngle-=(w.angle+(3*(Math.PI/2)))
+                    a=(Math.PI/2)-discVelocityAngle
+                    if(a>(Math.PI/2)){
+                        a=(Math.PI/2)+discVelocityAngle
+                        flip=true
+                    }
+
+                    if(flip){
+                        a*=-1
+                    }
+                    a+=w.angle
+                    newDiscVelocityAngle=a+(3*(Math.PI/2))
+
+                   
+
+                    //discRelativeYVelo*=-1
+
+                    //wallAngle=0-discVelocityAngle
+
 
                     //n=3*Math.PI/2
                 }
@@ -220,15 +298,15 @@ function checkDiscCollision(deltatime){
                     //n=0
                 }
 
-                newDiscVelocityAngle=Math.atan2(discRelativeXVelo,discRelativeYVelo)
+                //newDiscVelocityAngle=Math.atan2(discRelativeXVelo,discRelativeYVelo)
 
 
                 //newDiscVelocityAngle+=Math.PI/2
-                //newDiscVelocityAngle-w.angle
+                //newDiscVelocityAngle+w.angle
                 //newDiscVelocityAngle=(2*Math.PI)-newDiscVelocityAngle
 
-                d.xVelo=(Math.cos(newDiscVelocityAngle)*discVelocityMagnitude)
-                d.yVelo=(Math.sin(newDiscVelocityAngle)*discVelocityMagnitude)
+                d.xVelo=(Math.cos(newDiscVelocityAngle)*discVelocityMagnitude)//works*
+                d.yVelo=(Math.sin(newDiscVelocityAngle)*discVelocityMagnitude)//works*
 
                 //d.x=gameWidth/2
                 //d.y=gameHeight/2
@@ -265,7 +343,7 @@ function update(deltatime){
     moveDisc(deltatime)
     checkDiscCollision(deltatime)
 
-    //walls[0].angle+=deltatime*.4
+    walls[0].angle+=deltatime*.5
 
     //graphic layers
     drawBackground()
