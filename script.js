@@ -178,7 +178,7 @@ function checkDiscCollision(deltatime){
                 discRelativeXVelo=Math.cos(discVelocityAngle)*discVelocityMagnitude
                 discRelativeYVelo=Math.sin(discVelocityAngle)*discVelocityMagnitude
 
-
+                                
 
                 //console.log(discVelocityMagnitude)
                 
@@ -194,24 +194,24 @@ function checkDiscCollision(deltatime){
                 //figure out which side it's on
                 if(discRelativeAngle<regionAngle&&discRelativeAngle>-regionAngle){
                     console.log("right")
-                    discRelativeXVelo*=-1
+                    
                     //n=Math.PI
                 }
                 else if(discRelativeAngle<Math.PI-regionAngle&&discRelativeAngle>regionAngle){
                     console.log("bottom")
-                    discRelativeYVelo*=-1
+                    
 
                    // n=Math.PI/2
                 }
                 else if((discRelativeAngle<Math.PI&&discRelativeAngle>Math.PI-regionAngle)||(discRelativeAngle>-Math.PI&&discRelativeAngle<regionAngle-Math.PI)){
                     console.log("left")
-                    discRelativeXVelo*=-1
+                    
 
                    // n=0
                 }
                 else if(discRelativeAngle<-regionAngle&&discRelativeAngle>regionAngle-Math.PI){
                     console.log("top")
-                    discRelativeYVelo*=-1
+                    
 
                     //n=3*Math.PI/2
                 }
