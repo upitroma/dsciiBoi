@@ -16,7 +16,7 @@ orangeGlowingRing.src = "assets/orangeGlowingRing.png"
 //soccerBall.src="assets/scott_ball_shiny.png"
 
 class Disc{
-    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=1, bounceDecay=5){
+    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=1, bounceDecay=10){
         this.x=x
         this.y=y
         this.radius=40
@@ -41,7 +41,11 @@ class Wall{
         this.color=0;
     }
 }
-var walls=[new Wall(1200,450,300,200)]
+var walls=[
+    new Wall(1200,300,300,200),
+    new Wall(1200,600,300,200),
+    new Wall(200,450,100,400)
+]
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -158,48 +162,36 @@ function checkDiscCollision(deltatime){
             w=walls[j]
 
             if(Math.abs(d.x-w.centerX)<(w.width/2)&&(Math.abs(d.y-w.centerY)<(w.height/2))){//if x is contained
-                w.color=1;
-
                 //bounce
                 discRelativeAngle=Math.atan2(d.y-w.centerY,d.x-w.centerX)
-
                 regionAngle=Math.atan2(w.height/2,w.width/2)
                
                 //figure out which side it's on
                 if(discRelativeAngle<regionAngle&&discRelativeAngle>-regionAngle){
-                    console.log("right")
+                    //console.log("right")
                     d.xVelo*=-1
-                    
                 }
                 else if(discRelativeAngle<Math.PI-regionAngle&&discRelativeAngle>regionAngle){
-                    console.log("bottom")
+                    //console.log("bottom")
                     d.yVelo*=-1
-
-                   // n=Math.PI/2
                 }
                 else if((discRelativeAngle<Math.PI&&discRelativeAngle>Math.PI-regionAngle)||(discRelativeAngle>-Math.PI&&discRelativeAngle<regionAngle-Math.PI)){
-                    console.log("left")
+                    //console.log("left")
                     d.xVelo*=-1
-
-                   // n=0
                 }
                 else if(discRelativeAngle<-regionAngle&&discRelativeAngle>regionAngle-Math.PI){
-                    console.log("top")
+                    //console.log("top")
                     d.yVelo*=-1
 
                 }
                 else{
-                    console.log("corner or center or error")
-                    //n=0
+                    //console.log("corner or center or error")
                 }   
                 d.x+=d.xVelo*deltatime            
                 d.y+=d.yVelo*deltatime
                 
                 d.bounceDecay--
 
-            }
-            else{
-                w.color=0
             }
         }
     }
