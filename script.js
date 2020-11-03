@@ -48,6 +48,17 @@ var walls=[
     new Wall(200,450,100,400)
 ]
 
+class Enemy{
+    constructor(x,y,width,height,id){
+        this.x=x
+        this.y=y
+        this.width=width
+        this.height=height
+        this.id=id
+        this.alive=true
+    }
+}
+
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
 function resizeWindow(){
