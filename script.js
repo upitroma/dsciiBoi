@@ -39,7 +39,7 @@ class Wall{
         this.centerY=centerY;
         this.width=width;
         this.height=height;
-        this.colorId=colorId;
+        this.colorId=colorId; //see drawWalls for refrence
     }
 }
 var walls=[
@@ -101,7 +101,7 @@ function drawWalls(){
             ctx.fillStyle = "blue"
         }
         else if(w.colorId==-1){
-            continue;
+            continue; //no texture, just hitbox
         }
         else{
             ctx.fillStyle = "red"
@@ -171,7 +171,7 @@ function drawPlayer(){
     ctx.fillRect((canvas.width/2)-(w/2), (canvas.height/2)-(w/2), w, w);
 }
 
-function moveDisc(deltatime){
+function moveDiscs(deltatime){
     for(i=0;i<discs.length; i++){
         d=discs[i]
         d.x+=(d.xVelo)*deltatime;
@@ -251,9 +251,9 @@ function checkDiscCollision(deltatime){
 function update(deltatime){
     ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
 
-    
+    //logic
     checkBounceDecay()
-    moveDisc(deltatime)
+    moveDiscs(deltatime)
     checkDiscCollision(deltatime)
 
     //graphic layers
