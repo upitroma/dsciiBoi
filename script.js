@@ -34,18 +34,18 @@ class Disc{
 var discs=[]
 
 class Wall{
-    constructor(centerX,centerY,width,height){
+    constructor(centerX,centerY,width,height, colorId){
         this.centerX=centerX;
         this.centerY=centerY;
         this.width=width;
         this.height=height;
-        this.color=0;
+        this.colorId=colorId;
     }
 }
 var walls=[
-    new Wall(1200,300,300,200),
-    new Wall(1200,600,300,200),
-    new Wall(200,450,100,400)
+    new Wall(1200,300,300,200, 0),
+    new Wall(1200,600,300,200, 0),
+    new Wall(200,450,100,400, -1)
 ]
 
 class Enemy{
@@ -97,8 +97,11 @@ function drawWalls(){
     for(i=0;i<walls.length; i++){
        
         w=walls[i];
-        if(w.color==0){
+        if(w.colorId==0){
             ctx.fillStyle = "blue"
+        }
+        else if(w.colorId==-1){
+            continue;
         }
         else{
             ctx.fillStyle = "red"
