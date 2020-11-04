@@ -49,9 +49,9 @@ var walls=[
 ]
 
 class Enemy{
-    constructor(x,y,width,height,id){
-        this.x=x
-        this.y=y
+    constructor(centerX,centerY,width,height,id){
+        this.centerX=centerX
+        this.centerY=centerY
         this.width=width
         this.height=height
         this.id=id
@@ -59,7 +59,7 @@ class Enemy{
     }
 }
 var enemies=[
-    new Enemy(100,300,100,100,0)
+    new Enemy(100,450,100,100,0)
 ]
 
 //resize the canvas when the window is resized
@@ -115,9 +115,13 @@ function drawWalls(){
 
 function drawEnemies(){
     for(i=0;i<enemies.length; i++){
+        
        
         w=enemies[i];
-        if(w.color==0){
+
+        //console.log(w)
+
+        if(w.id==0){
             ctx.fillStyle = "red"
         }
         drawRectangle(
@@ -125,7 +129,7 @@ function drawEnemies(){
             w.centerY*scale,
             w.width*scale,
             w.height*scale,
-            w.angle
+            0
         )
     }
 }
