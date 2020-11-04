@@ -17,7 +17,7 @@ var soccerBall = new Image();
 soccerBall.src="assets/sprites/scott_ball_shiny.png"
 
 class Disc{
-    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=2, bounceDecay=10){
+    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=2, bounceDecay=4){
         this.x=x
         this.y=y
         this.radius=40
@@ -115,22 +115,20 @@ function drawWalls(){
 
 function drawEnemies(){
     for(i=0;i<enemies.length; i++){
-        
-       
         w=enemies[i];
 
-        //console.log(w)
-
-        if(w.id==0){
-            ctx.fillStyle = "red"
+        if(w.alive){
+            if(w.id==0){
+                ctx.fillStyle = "red"
+            }
+            drawRectangle(
+                w.centerX*scale,
+                w.centerY*scale,
+                w.width*scale,
+                w.height*scale,
+                0
+            )
         }
-        drawRectangle(
-            w.centerX*scale,
-            w.centerY*scale,
-            w.width*scale,
-            w.height*scale,
-            0
-        )
     }
 }
 
@@ -197,7 +195,7 @@ function checkDiscCollision(deltatime){
         for(j=0;j<walls.length;j++){
             w=walls[j]
 
-            if(Math.abs(d.x-w.centerX)<(w.width/2)&&(Math.abs(d.y-w.centerY)<(w.height/2))){//if x is contained
+            if(Math.abs(d.x-w.centerX)<(w.width/2)&&(Math.abs(d.y-w.centerY)<(w.height/2))){//if disc is contained
                 //bounce
                 discRelativeAngle=Math.atan2(d.y-w.centerY,d.x-w.centerX)
                 regionAngle=Math.atan2(w.height/2,w.width/2)
@@ -228,6 +226,18 @@ function checkDiscCollision(deltatime){
                 
                 d.bounceDecay--
 
+            }
+        }
+        for(j=0;j<enemies.length;j++){
+            e=enemies[j]
+
+            if(e.alive){
+                if(Math.abs(d.x-e.centerX)<(e.width/2)&&(Math.abs(d.y-e.centerY)<(e.height/2))){
+                    e.alive=false
+
+                    //add additional bounce
+                    d.bounceDecay++
+                }
             }
         }
     }
