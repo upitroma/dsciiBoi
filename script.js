@@ -58,6 +58,9 @@ class Enemy{
         this.alive=true
     }
 }
+var enemies=[
+    new Enemy(100,300,100,100,0)
+]
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -98,6 +101,23 @@ function drawWalls(){
             ctx.fillStyle = "blue"
         }
         else{
+            ctx.fillStyle = "red"
+        }
+        drawRectangle(
+            w.centerX*scale,
+            w.centerY*scale,
+            w.width*scale,
+            w.height*scale,
+            w.angle
+        )
+    }
+}
+
+function drawEnemies(){
+    for(i=0;i<enemies.length; i++){
+       
+        w=enemies[i];
+        if(w.color==0){
             ctx.fillStyle = "red"
         }
         drawRectangle(
@@ -223,6 +243,7 @@ function update(deltatime){
     drawBackground()
     drawPlayer()
     drawWalls()
+    drawEnemies()
     drawDisc()
    
 }
