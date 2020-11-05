@@ -9,9 +9,9 @@ resizeWindow();
 
 //load assets
 var blueGlowingRing = new Image();
-blueGlowingRing.src = "assets/blueGlowingRing.png"
+blueGlowingRing.src = "assets/sprites/blueGlowingRing.png"
 var orangeGlowingRing = new Image();
-orangeGlowingRing.src = "assets/orangeGlowingRing.png"
+orangeGlowingRing.src = "assets/sprites/orangeGlowingRing.png"
 
 var soccerBall = new Image();
 soccerBall.src="assets/sprites/scott_ball_shiny.png"
