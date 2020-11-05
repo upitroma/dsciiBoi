@@ -173,7 +173,7 @@ function drawDisc(){
 
 function drawPlayer(){
     ctx.fillStyle = "blue"
-    w= 80 * scale
+    w= 80 //* scale
     ctx.fillRect(((player.x)-(w/2))*scale, ((player.y)-(w/2))*scale, w*scale, w*scale);
 }
 
