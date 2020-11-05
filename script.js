@@ -16,6 +16,12 @@ orangeGlowingRing.src = "assets/orangeGlowingRing.png"
 var soccerBall = new Image();
 soccerBall.src="assets/sprites/scott_ball_shiny.png"
 
+//since there's only 1 player, it doesn't need to be a class
+var player = {
+    x: 800,
+    y: 700
+}
+
 class Disc{
     constructor(x=50,y=50,xVelo=500,yVelo=600, discId=2, bounceDecay=4){
         this.x=x
@@ -45,7 +51,7 @@ class Wall{
 var walls=[
     new Wall(1200,300,300,200, 0),
     new Wall(1200,600,300,200, 0),
-    new Wall(200,450,100,400, -1)
+    new Wall(200,450,100,400, 0)
 ]
 
 class Enemy{
@@ -79,10 +85,10 @@ function resizeWindow(){
 canvas.addEventListener("mousedown", launchDisc, false)
 function launchDisc(event){
     discs.push(new Disc(
-        gameWidth/2,
-        gameHeight/2,
-        ((event.x-((window.innerWidth-canvas.width)/2))-(canvas.width/2)) / scale,
-        ((event.y-((window.innerHeight-canvas.height)/2))-(canvas.height/2)) / scale)
+        player.x,
+        player.y,
+        ((event.x-((window.innerWidth-canvas.width)/2))-((player.x)*scale)) / scale,
+        ((event.y-((window.innerHeight-canvas.height)/2))-((player.y)*scale)) / scale)
     )
 }
 
@@ -168,7 +174,7 @@ function drawDisc(){
 function drawPlayer(){
     ctx.fillStyle = "blue"
     w= 80 * scale
-    ctx.fillRect((canvas.width/2)-(w/2), (canvas.height/2)-(w/2), w, w);
+    ctx.fillRect(((player.x)-(w/2))*scale, ((player.y)-(w/2))*scale, w*scale, w*scale);
 }
 
 function moveDiscs(deltatime){
