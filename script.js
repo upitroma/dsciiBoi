@@ -48,8 +48,26 @@ function loadLevel(level){
     enemies=level.enemies
     player=level.player
 }
+levels=[level_1, level_2, level_3]
+var currentLevel=0
+loadLevel(levels[currentLevel])
 
-loadLevel(level_2)
+function checkLevelComplete(){
+    levelComplete=true
+    for(i=0;i<enemies.length;i++){
+        if(enemies[i].alive){
+            levelComplete=false
+        }
+    }
+    if(levelComplete){
+        discs=[]
+        currentLevel++
+        if(currentLevel>=levels.length){
+            console.log("ran out of levels!")
+        }
+        loadLevel(levels[currentLevel])
+    }
+}
 
 //launch disc on mouse click
 canvas.addEventListener("mousedown", launchDisc, false)
@@ -216,6 +234,9 @@ function checkDiscCollision(deltatime){
 
                     //add additional bounce
                     d.bounceDecay++
+
+                    //check if level is done
+                    checkLevelComplete()
                 }
             }
         }
