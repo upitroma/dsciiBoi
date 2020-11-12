@@ -22,8 +22,12 @@ orangeGlowingRing.src = "assets/sprites/orangeGlowingRing.png"
 var soccerBall = new Image();
 soccerBall.src="assets/sprites/scott_ball_shiny.png"
 
-
-
+var player = {
+    x: -1,
+    y: -1,
+}
+var walls=[]
+var enemies=[]
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -37,6 +41,15 @@ function resizeWindow(){
     }
     scale = canvas.width / gameWidth;
 }
+
+
+function loadLevel(level){
+    walls=level.walls
+    enemies=level.enemies
+    player=level.player
+}
+
+loadLevel(level_1)
 
 //launch disc on mouse click
 canvas.addEventListener("mousedown", launchDisc, false)
