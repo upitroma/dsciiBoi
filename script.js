@@ -18,9 +18,16 @@ var blueGlowingRing = new Image();
 blueGlowingRing.src = "assets/sprites/blueGlowingRing.png"
 var orangeGlowingRing = new Image();
 orangeGlowingRing.src = "assets/sprites/orangeGlowingRing.png"
-
 var soccerBall = new Image();
 soccerBall.src="assets/sprites/scott_ball_shiny.png"
+var mineArm = new Image();
+mineArm.src = "assets/sprites/arm.png";
+
+var mouse = {
+    'x': 0,
+    'y': 0,
+    'd': 0
+}
 
 var player = {
     x: -1,
@@ -28,6 +35,7 @@ var player = {
 }
 var walls=[]
 var enemies=[]
+let armyBoi = new Arm(player.x, player.y);//Arm is defined in ./classes.js
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -47,6 +55,8 @@ function loadLevel(level){
     walls=level.walls
     enemies=level.enemies
     player=level.player
+    armyBoi.x=player.x
+    armyBoi.y=player.y
 }
 levels=[level_1, level_2, level_3]
 var currentLevel=0
@@ -70,6 +80,7 @@ function checkLevelComplete(){
 }
 
 //launch disc on mouse click
+/*
 canvas.addEventListener("mousedown", launchDisc, false)
 function launchDisc(event){
     discs.push(new Disc(
@@ -79,6 +90,28 @@ function launchDisc(event){
         ((event.y-((window.innerHeight-canvas.height)/2))-((player.y)*scale)) / scale)
     )
 }
+*/
+
+//launch disc on mouse click
+canvas.addEventListener("mousedown", setmousedown, false)
+function setmousedown(event){
+        mouse.d = 1;
+        armyBoi.setThrow();  
+}
+canvas.addEventListener("mouseup", setmouseup, false)
+function setmouseup(event){
+        mouse.d = 0; 
+}
+
+canvas.addEventListener("mousemove", mouseUpdate, false)
+function mouseUpdate(event){
+    mouse.x = event.x;
+    mouse.y = event.y;
+}
+
+
+
+
 
 function drawRectangle(x,y,width,height,angle){
     ctx.translate(x, y);
@@ -258,6 +291,7 @@ function update(deltatime){
     drawPlayer()
     drawWalls()
     drawEnemies()
+    armyBoi.update(deltatime);
     drawDisc()
    
 }

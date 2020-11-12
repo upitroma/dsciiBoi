@@ -34,3 +34,73 @@ class Enemy{
         this.alive=true
     }
 }
+
+class Arm{
+    constructor(x,y) {
+        this.status = 0;
+        this.theta = 0;
+        this.x = x;
+        this.y = y;
+        this.width = 393 / 10;
+        this.height = 1200 / 10;
+        this.throw = 0;
+    }
+    update(deltatime) {
+        //console.log(this.theta);
+        if (this.status == 0) {
+            this.theta = Math.atan2((mouse.y-this.y), (mouse.x-this.x));
+        } else if (this.status == 1){
+            this.theta += this.speed * 5 * deltatime;
+            if (mouse.d)
+            {
+                this.speed += 1 * deltatime;
+                if (this.theta > Math.PI)
+                {
+                    this.theta -= Math.PI * 2;
+                }
+            }
+            else if (this.theta >= this.throw + Math.PI * 2) {
+                this.status = 2;
+
+                discs.push(new Disc(
+                    this.x  + Math.cos(this.throw) * this.height,
+                    this.y + Math.sin(this.throw) * this.height,
+                    500 * this.speed * Math.cos(this.throw),
+                    500 * this.speed * Math.sin(this.throw))
+                    )  
+            }
+        } else {
+            this.theta += 15 * deltatime;
+            if (this.theta > Math.PI ){
+                this.theta -= Math.PI * 2;
+            }
+            this.throw = Math.atan2((mouse.y-window.innerHeight/2), (mouse.x-window.innerWidth/2));
+            var diff = Math.abs((this.throw + Math.PI) - (this.theta + Math.PI));
+            if (diff <= Math.PI * 0.1) {
+                this.status = 0;
+            }
+        }
+        this.render();
+    }
+    render() {
+        ctx.save();
+        ctx.translate(this.x * scale, this.y * scale);
+        ctx.rotate(this.theta - Math.PI / 2);
+        ctx.drawImage(mineArm, -1*(this.width * scale) / 2, 0, this.width * scale, this.height * scale);
+        if (this.status == 1) {
+            ctx.drawImage(soccerBall, -1*(this.width * scale) / 2, (this.height - 30) * scale, 80*scale, 80*scale)
+        }
+        ctx.restore();
+    }
+    setThrow() {
+        if (this.status == 0) {
+            this.status = 1;
+            this.speed = 0;
+            this.throw = this.theta;
+        }
+    }
+    setPos(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
