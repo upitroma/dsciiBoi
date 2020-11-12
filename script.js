@@ -49,7 +49,7 @@ function loadLevel(level){
     player=level.player
 }
 
-loadLevel(level_1)
+loadLevel(level_2)
 
 //launch disc on mouse click
 canvas.addEventListener("mousedown", launchDisc, false)

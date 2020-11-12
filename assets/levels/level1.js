@@ -1,7 +1,7 @@
 var level_1 = {
     player:  {
         x: 250,
-        y: 400,
+        y: 400
     },
     enemies: [
         new Enemy(1000,800,50,50,0),
@@ -17,3 +17,4 @@ var level_1 = {
         new Wall(1350,350,500,100, 0)
     ]
 };
+
