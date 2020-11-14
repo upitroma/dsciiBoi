@@ -105,8 +105,10 @@ function setmouseup(event){
 
 canvas.addEventListener("mousemove", mouseUpdate, false)
 function mouseUpdate(event){
-    mouse.x = event.x;
-    mouse.y = event.y;
+    //mouse.x = event.x;
+    //mouse.y = event.y;
+    mouse.x=(event.x-((window.innerWidth-canvas.width)/2))/scale
+    mouse.y=(event.y-((window.innerHeight-canvas.height)/2))/scale
 }
 
 

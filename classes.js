@@ -74,7 +74,7 @@ class Arm{
             if (this.theta > Math.PI ){
                 this.theta -= Math.PI * 2;
             }
-            this.throw = Math.atan2((mouse.y-window.innerHeight/2), (mouse.x-window.innerWidth/2));
+            this.throw = Math.atan2((mouse.y-this.y), (mouse.x-this.x));
             var diff = Math.abs((this.throw + Math.PI) - (this.theta + Math.PI));
             if (diff <= Math.PI * 0.1) {
                 this.status = 0;
