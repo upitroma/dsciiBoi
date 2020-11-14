@@ -1,2 +1,2 @@
 # dsciiBoi
-disc go BoingBoingBoingBoingBoingBoingBoing
+ArmyBoi go WOOOOOOOOOOOOOOOOOOOOOOOSSSSSSSSSSSHHHHHHHHHHHHH
