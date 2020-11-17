@@ -16,12 +16,13 @@ class Disc{
 var discs=[]
 
 class Wall{
-    constructor(centerX,centerY,width,height, colorId){
+    constructor(centerX,centerY,width,height, colorId, angle){
         this.centerX=centerX;
         this.centerY=centerY;
         this.width=width;
         this.height=height;
         this.colorId=colorId; //see drawWalls for refrence
+        this.angle=angle;
     }
 }
 class Enemy{

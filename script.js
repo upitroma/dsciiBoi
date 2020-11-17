@@ -161,49 +161,172 @@ function checkDiscCollision(deltatime){
         for(j=0;j<walls.length;j++){
             w=walls[j]
 
-            if(Math.abs(d.x-w.centerX)<(w.width/2)&&(Math.abs(d.y-w.centerY)<(w.height/2))){//if disc is contained
+            //rotate point around rectangle center
+            rotatedX = (Math.cos(w.angle)*(d.x-w.centerX)-Math.sin(w.angle)*(d.y-w.centerY)) + w.centerX;
+            rotatedY = (Math.sin(w.angle)*(d.x-w.centerX)+Math.cos(w.angle)*(d.y-w.centerY)) + w.centerY;
+
+            if(Math.abs(rotatedX-w.centerX)<(w.width/2)&&(Math.abs(rotatedY-w.centerY)<(w.height/2))){//if x is contained
+                w.color=1;
+
                 //bounce
-                discRelativeAngle=Math.atan2(d.y-w.centerY,d.x-w.centerX)
+                discRelativeAngle=Math.atan2(rotatedY-w.centerY,rotatedX-w.centerX)
+                console.log("relative angle before: "+discRelativeAngle)
+
+
+                discVelocityMagnitude=Math.sqrt((d.xVelo*d.xVelo)+(d.yVelo*d.yVelo))//pythagorean
+
+
+                discVelocityAngle=Math.atan2(d.yVelo,d.xVelo)
+                //discVelocityAngle-=w.angle
+
+                //discRelativeXVelo=Math.cos(discVelocityAngle)*discVelocityMagnitude
+                //discRelativeYVelo=Math.sin(discVelocityAngle)*discVelocityMagnitude
+
+
+
+                //console.log(discVelocityMagnitude)
+                
+                
+                //console.log(discVelocityAngle)
+                //console.log((Math.cos(discVelocityAngle)*discVelocityMagnitude))
+
                 regionAngle=Math.atan2(w.height/2,w.width/2)
-               
+
+                //n=0
+                newDiscVelocityAngle=0
+
+                wallAngle=0
+                side = "";
                 //figure out which side it's on
+
                 if(discRelativeAngle<regionAngle&&discRelativeAngle>-regionAngle){
-                    //console.log("right")
-                    d.xVelo*=-1
+                    console.log("right")
+                    side = "right";
+
+                    discVelocityAngle-=(w.angle+(Math.PI))
+                    a=(Math.PI/2)-discVelocityAngle
+                    if(a>(Math.PI/2)){
+                        a=(Math.PI/2)+discVelocityAngle
+                        flip=true
+                        a*=-1
+                    }
+                    a+=w.angle
+                    newDiscVelocityAngle=a+(Math.PI)
+                    //discRelativeXVelo*=-1
+                    
+                    
+                    //n=Math.PI
+
+
                 }
                 else if(discRelativeAngle<Math.PI-regionAngle&&discRelativeAngle>regionAngle){
-                    //console.log("bottom")
-                    d.yVelo*=-1
+                    console.log("bottom")
+                    side = "bottom";
+
+
+                    discVelocityAngle-=(w.angle+(Math.PI/2))
+                    a=(Math.PI/2)-discVelocityAngle
+                    if(a>(Math.PI/2)){
+                        a=(Math.PI/2)+discVelocityAngle
+                        flip=true
+                        a*=-1
+                    }
+                    a+=w.angle
+                    newDiscVelocityAngle=a+(Math.PI/2)
+
+                    
+                    //discRelativeYVelo*=-1
+
+                    //wallAngle=0-discVelocityAngle
+
+
+                   // n=Math.PI/2
                 }
                 else if((discRelativeAngle<Math.PI&&discRelativeAngle>Math.PI-regionAngle)||(discRelativeAngle>-Math.PI&&discRelativeAngle<regionAngle-Math.PI)){
-                    //console.log("left")
-                    d.xVelo*=-1
+                    console.log("left")
+                    side = "left";
+
+                    discVelocityAngle-=w.angle
+                    a=(Math.PI/2)-discVelocityAngle
+                    if(a>(Math.PI/2)){
+                        a=(Math.PI/2)+discVelocityAngle
+                        flip=true
+                        a*=-1
+                    }
+                    a+=w.angle
+                    newDiscVelocityAngle=a
+
+
+                    //discRelativeXVelo*=-1
+
+                    //wallAngle=90-discVelocityAngle
+
+
+                   // n=0
                 }
                 else if(discRelativeAngle<-regionAngle&&discRelativeAngle>regionAngle-Math.PI){
-                    //console.log("top")
-                    d.yVelo*=-1
+                    console.log("top")
+                    side = "top";
 
+                    discVelocityAngle-=(w.angle+(3*(Math.PI/2)))
+                    a=(Math.PI/2)-discVelocityAngle
+                    if(a>(Math.PI/2)){
+                        a=(Math.PI/2)+discVelocityAngle
+                        flip=true
+                        a*=-1
+                    }
+                    a+=w.angle
+                    newDiscVelocityAngle=a+(3*(Math.PI/2))
+
+                   
+
+                    //discRelativeYVelo*=-1
+
+                    //wallAngle=0-discVelocityAngle
+
+
+                    //n=3*Math.PI/2
                 }
                 else{
-                    //console.log("corner or center or error")
-                }   
-                d.x+=d.xVelo*deltatime            
-                d.y+=d.yVelo*deltatime
+                    console.log("corner or center or error")
+                    //n=0
+                }
+
+                //newDiscVelocityAngle=Math.atan2(discRelativeXVelo,discRelativeYVelo)
+
+
+                //newDiscVelocityAngle+=Math.PI/2
+                //newDiscVelocityAngle+w.angle
+                //newDiscVelocityAngle=(2*Math.PI)-newDiscVelocityAngle
+                if(flip)
+                {
+                    d.yVelo=(Math.cos(newDiscVelocityAngle)*discVelocityMagnitude)//works*
+                    d.xVelo=(Math.sin(newDiscVelocityAngle)*discVelocityMagnitude)//works*
+                }
+                //else
+                //{
+                //    d.xVelo=-(Math.cos(newDiscVelocityAngle)*discVelocityMagnitude)//works*
+                //    d.yVelo=-(Math.sin(newDiscVelocityAngle)*discVelocityMagnitude)//works*
+                //}
+                if(w.angle%Math.PI == 0 && (side == "left" || side == "right"))
+                {
+                    d.yVelo*=-1;
+                }
+                else if(w.angle%Math.PI == 0 && (side == "top" || side == "bottom"))
+                {
+                    //d.xVelo*=-1;
+                    d.yVelo*=-1;
+                }
+                flip = false;
+                d.bounceDecay--;
+
+                //d.x=gameWidth/2
+                //d.y=gameHeight/2
                 
-                d.bounceDecay--
 
             }
-        }
-        for(j=0;j<enemies.length;j++){
-            e=enemies[j]
-
-            if(e.alive){
-                if(Math.abs(d.x-e.centerX)<(e.width/2)&&(Math.abs(d.y-e.centerY)<(e.height/2))){
-                    e.alive=false
-
-                    //add additional bounce
-                    d.bounceDecay++
-                }
+            else{
+                w.color=0
             }
         }
     }
