@@ -1,5 +1,8 @@
+
+
 //canvas setup
 var canvas = document.getElementById('canvas')
+var test = document.ge
 var ctx = canvas.getContext('2d');
 var gameWidth = 1600;
 var gameHeight = 900;
@@ -7,46 +10,32 @@ var ratio = gameWidth / gameHeight;
 var scale = 1;
 resizeWindow();
 
+
+
+
 //load assets
 var blueGlowingRing = new Image();
-blueGlowingRing.src = "assets/blueGlowingRing.png"
+blueGlowingRing.src = "assets/sprites/blueGlowingRing.png"
 var orangeGlowingRing = new Image();
-orangeGlowingRing.src = "assets/orangeGlowingRing.png"
-
+orangeGlowingRing.src = "assets/sprites/orangeGlowingRing.png"
 var soccerBall = new Image();
 soccerBall.src="assets/sprites/scott_ball_shiny.png"
+var mineArm = new Image();
+mineArm.src = "assets/sprites/arm.png";
 
-class Disc{
-    constructor(x=50,y=50,xVelo=500,yVelo=600, discId=2, bounceDecay=10){
-        this.x=x
-        this.y=y
-        this.radius=40
-
-        this.discId=discId
-
-        this.bounceDecay=bounceDecay;//number of bounces
-   
-        // pixels/second
-        this.xVelo=xVelo
-        this.yVelo=yVelo
-    }
+var mouse = {
+    'x': 0,
+    'y': 0,
+    'd': 0
 }
-var discs=[]
 
-class Wall{
-    constructor(centerX,centerY,width,height){
-        this.centerX=centerX;
-        this.centerY=centerY;
-        this.width=width;
-        this.height=height;
-        this.color=0;
-    }
+var player = {
+    x: -1,
+    y: -1,
 }
-var walls=[
-    new Wall(1200,300,300,200),
-    new Wall(1200,600,300,200),
-    new Wall(200,450,100,400)
-]
+var walls=[]
+var enemies=[]
+let armyBoi = new Arm(player.x, player.y);//Arm is defined in ./classes.js
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -61,16 +50,65 @@ function resizeWindow(){
     scale = canvas.width / gameWidth;
 }
 
+
+function loadLevel(level){
+    walls=level.walls
+    enemies=level.enemies
+    player=level.player
+    armyBoi.x=player.x
+    armyBoi.y=player.y
+}
+levels=[level_0, level_1, level_2, level_3, level_4]
+var currentLevel=0
+loadLevel(levels[currentLevel])
+
+function checkLevelComplete(){
+    levelComplete=true
+    for(i=0;i<enemies.length;i++){
+        if(enemies[i].alive){
+            levelComplete=false
+        }
+    }
+    if(levelComplete){
+        discs=[]
+        currentLevel++
+        if(currentLevel>=levels.length){
+            console.log("ran out of levels!")
+        }
+        loadLevel(levels[currentLevel])
+    }
+}
+
 //launch disc on mouse click
+/*
 canvas.addEventListener("mousedown", launchDisc, false)
 function launchDisc(event){
     discs.push(new Disc(
-        gameWidth/2,
-        gameHeight/2,
-        ((event.x-((window.innerWidth-canvas.width)/2))-(canvas.width/2)) / scale,
-        ((event.y-((window.innerHeight-canvas.height)/2))-(canvas.height/2)) / scale)
+        player.x,
+        player.y,
+        ((event.x-((window.innerWidth-canvas.width)/2))-((player.x)*scale)) / scale,
+        ((event.y-((window.innerHeight-canvas.height)/2))-((player.y)*scale)) / scale)
     )
 }
+*/
+
+//launch disc on mouse click
+canvas.addEventListener("mousedown", setmousedown, false)
+function setmousedown(event){
+        mouse.d = 1;
+        armyBoi.setThrow();  
+}
+canvas.addEventListener("mouseup", setmouseup, false)
+function setmouseup(event){
+        mouse.d = 0; 
+}
+
+canvas.addEventListener("mousemove", mouseUpdate, false)
+function mouseUpdate(event){
+    mouse.x=(event.x-((window.innerWidth-canvas.width)/2))/scale
+    mouse.y=(event.y-((window.innerHeight-canvas.height)/2))/scale
+}
+
 
 function drawRectangle(x,y,width,height,angle){
     ctx.translate(x, y);
@@ -83,8 +121,11 @@ function drawWalls(){
     for(i=0;i<walls.length; i++){
        
         w=walls[i];
-        if(w.color==0){
+        if(w.colorId==0){
             ctx.fillStyle = "blue"
+        }
+        else if(w.colorId==-1){
+            continue; //no texture, just hitbox
         }
         else{
             ctx.fillStyle = "red"
@@ -96,6 +137,25 @@ function drawWalls(){
             w.height*scale,
             w.angle
         )
+    }
+}
+
+function drawEnemies(){
+    for(i=0;i<enemies.length; i++){
+        w=enemies[i];
+
+        if(w.alive){
+            if(w.id==0){
+                ctx.fillStyle = "red"
+            }
+            drawRectangle(
+                w.centerX*scale,
+                w.centerY*scale,
+                w.width*scale,
+                w.height*scale,
+                0
+            )
+        }
     }
 }
 
@@ -131,11 +191,11 @@ function drawDisc(){
 
 function drawPlayer(){
     ctx.fillStyle = "blue"
-    w= 80 * scale
-    ctx.fillRect((canvas.width/2)-(w/2), (canvas.height/2)-(w/2), w, w);
+    w= 80 //* scale
+    ctx.fillRect(((player.x)-(w/2))*scale, ((player.y)-(w/2))*scale, w*scale, w*scale);
 }
 
-function moveDisc(deltatime){
+function moveDiscs(deltatime){
     for(i=0;i<discs.length; i++){
         d=discs[i]
         d.x+=(d.xVelo)*deltatime;
@@ -162,7 +222,7 @@ function checkDiscCollision(deltatime){
         for(j=0;j<walls.length;j++){
             w=walls[j]
 
-            if(Math.abs(d.x-w.centerX)<(w.width/2)&&(Math.abs(d.y-w.centerY)<(w.height/2))){//if x is contained
+            if(Math.abs(d.x-w.centerX)<(w.width/2)&&(Math.abs(d.y-w.centerY)<(w.height/2))){//if disc is contained
                 //bounce
                 discRelativeAngle=Math.atan2(d.y-w.centerY,d.x-w.centerX)
                 regionAngle=Math.atan2(w.height/2,w.width/2)
@@ -195,6 +255,21 @@ function checkDiscCollision(deltatime){
 
             }
         }
+        for(j=0;j<enemies.length;j++){
+            e=enemies[j]
+
+            if(e.alive){
+                if(Math.abs(d.x-e.centerX)<(e.width/2)&&(Math.abs(d.y-e.centerY)<(e.height/2))){
+                    e.alive=false
+
+                    //add additional bounce
+                    d.bounceDecay++
+
+                    //check if level is done
+                    checkLevelComplete()
+                }
+            }
+        }
     }
 }
 
@@ -203,15 +278,17 @@ function checkDiscCollision(deltatime){
 function update(deltatime){
     ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
 
-    
+    //logic
     checkBounceDecay()
-    moveDisc(deltatime)
+    moveDiscs(deltatime)
     checkDiscCollision(deltatime)
 
     //graphic layers
     drawBackground()
     drawPlayer()
     drawWalls()
+    drawEnemies()
+    armyBoi.update(deltatime);
     drawDisc()
    
 }
