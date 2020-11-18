@@ -58,7 +58,7 @@ function loadLevel(level){
     armyBoi.x=player.x
     armyBoi.y=player.y
 }
-levels=[level_1, level_2, level_3]
+levels=[level_0, level_1, level_2, level_3, level_4]
 var currentLevel=0
 loadLevel(levels[currentLevel])
 
