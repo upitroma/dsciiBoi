@@ -86,19 +86,6 @@ function checkLevelComplete(){
 }
 
 //launch disc on mouse click
-/*
-canvas.addEventListener("mousedown", launchDisc, false)
-function launchDisc(event){
-    discs.push(new Disc(
-        player.x,
-        player.y,
-        ((event.x-((window.innerWidth-canvas.width)/2))-((player.x)*scale)) / scale,
-        ((event.y-((window.innerHeight-canvas.height)/2))-((player.y)*scale)) / scale)
-    )
-}
-*/
-
-//launch disc on mouse click
 canvas.addEventListener("mousedown", setmousedown, false)
 function setmousedown(event){
         mouse.d = 1;

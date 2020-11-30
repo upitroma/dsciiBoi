@@ -21,7 +21,7 @@ class Wall{
         this.centerY=centerY;
         this.width=width;
         this.height=height;
-        this.colorId=colorId; //see drawWalls for refrence
+        this.colorId=colorId; //see drawWalls for reference
     }
 }
 class Enemy{
