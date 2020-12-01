@@ -154,8 +154,11 @@ function drawEnemies(){
 }
 
 function drawHud(){
+    //lots of hard coding badness 
+    ctx.fillStyle="white"
     ctx.font = ""+scale*70+"px Arial";
-    ctx.fillText("x"+player.discsLeft, gameWidth*.90*scale, gameHeight*.99*scale);
+    ctx.fillText("x"+player.discsLeft, gameWidth*.92*scale, gameHeight*.99*scale);
+    ctx.drawImage(soccerBall, gameWidth*.885*scale,gameHeight*.94*scale,50*scale,50*scale)
 }
 
 function checkBounceDecay(){
