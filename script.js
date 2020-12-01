@@ -62,7 +62,11 @@ function loadLevel(levelIndex){
     player=level.player
     armyBoi.x=player.x
     armyBoi.y=player.y
+
+    //make hitbox for hud
+    walls.push(new Wall(1400,860,400,80,-1))
 }
+
 levels=[level_0, level_1, level_2, level_3, level_4]
 var currentLevel=0
 loadLevel(currentLevel)
@@ -157,6 +161,7 @@ function drawHud(){
     //lots of hard coding badness 
     ctx.fillStyle="white"
     ctx.font = ""+scale*70+"px Arial";
+    ctx.fillText("Lvl "+(currentLevel+1), gameWidth*.76*scale, gameHeight*.99*scale);
     ctx.fillText("x"+player.discsLeft, gameWidth*.92*scale, gameHeight*.99*scale);
     ctx.drawImage(soccerBall, gameWidth*.885*scale,gameHeight*.94*scale,50*scale,50*scale)
 }
