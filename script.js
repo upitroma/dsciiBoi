@@ -51,7 +51,13 @@ function resizeWindow(){
 }
 
 
-function loadLevel(level){
+function loadLevel(levelIndex){
+    if(levelIndex>=levels.length){
+        console.log("level does not exist")
+        return
+    }
+    var level=levels[levelIndex]
+
     walls=level.walls
     enemies=level.enemies
     player=level.player
@@ -60,7 +66,7 @@ function loadLevel(level){
 }
 levels=[level_0, level_1, level_2, level_3, level_4]
 var currentLevel=0
-loadLevel(levels[currentLevel])
+loadLevel(currentLevel)
 
 function checkLevelComplete(){
     levelComplete=true
@@ -75,22 +81,9 @@ function checkLevelComplete(){
         if(currentLevel>=levels.length){
             console.log("ran out of levels!")
         }
-        loadLevel(levels[currentLevel])
+        loadLevel(currentLevel)
     }
 }
-
-//launch disc on mouse click
-/*
-canvas.addEventListener("mousedown", launchDisc, false)
-function launchDisc(event){
-    discs.push(new Disc(
-        player.x,
-        player.y,
-        ((event.x-((window.innerWidth-canvas.width)/2))-((player.x)*scale)) / scale,
-        ((event.y-((window.innerHeight-canvas.height)/2))-((player.y)*scale)) / scale)
-    )
-}
-*/
 
 //launch disc on mouse click
 canvas.addEventListener("mousedown", setmousedown, false)

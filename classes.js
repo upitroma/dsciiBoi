@@ -21,7 +21,7 @@ class Wall{
         this.centerY=centerY;
         this.width=width;
         this.height=height;
-        this.colorId=colorId; //see drawWalls for refrence
+        this.colorId=colorId; //see drawWalls for reference
     }
 }
 class Enemy{
@@ -53,7 +53,7 @@ class Arm{
             this.theta += this.speed * 5 * deltatime;
             if (mouse.d)
             {
-                this.speed += 1 * deltatime;
+                this.speed += 2 * deltatime;
                 if (this.theta > Math.PI)
                 {
                     this.theta -= Math.PI * 2;
