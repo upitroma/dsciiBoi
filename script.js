@@ -11,8 +11,6 @@ var scale = 1;
 resizeWindow();
 
 
-
-
 //load assets
 var blueGlowingRing = new Image();
 blueGlowingRing.src = "assets/sprites/blueGlowingRing.png"
@@ -29,13 +27,14 @@ var mouse = {
     'd': 0
 }
 
-var player = {
-    x: -1,
-    y: -1,
-}
+
 var walls=[]
 var enemies=[]
 let armyBoi = new Arm(player.x, player.y);//Arm is defined in ./classes.js
+
+var hud={
+
+}
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -89,7 +88,9 @@ function checkLevelComplete(){
 canvas.addEventListener("mousedown", setmousedown, false)
 function setmousedown(event){
         mouse.d = 1;
-        armyBoi.setThrow();  
+        if(player.discsLeft>0){
+            armyBoi.setThrow();
+        }
 }
 canvas.addEventListener("mouseup", setmouseup, false)
 function setmouseup(event){
@@ -150,6 +151,11 @@ function drawEnemies(){
             )
         }
     }
+}
+
+function drawHud(){
+    ctx.font = ""+scale*70+"px Arial";
+    ctx.fillText("x"+player.discsLeft, gameWidth*.90*scale, gameHeight*.99*scale);
 }
 
 function checkBounceDecay(){
@@ -282,8 +288,8 @@ function update(deltatime){
     drawWalls()
     drawEnemies()
     armyBoi.update(deltatime);
+    drawHud()
     drawDisc()
-   
 }
  
 //tick

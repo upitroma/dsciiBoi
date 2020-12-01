@@ -1,7 +1,8 @@
 var level_1 = {
     player:  {
         x: 250,
-        y: 400
+        y: 400,
+        discsLeft: 4
     },
     enemies: [
         new Enemy(1000,800,50,50,0),

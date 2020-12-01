@@ -1,7 +1,8 @@
 var level_3 = {
     player: {
         x: 1000,
-        y: 250
+        y: 250,
+        discsLeft: 6
     },
     walls: [
         new Wall(900,650,125,75, 0),

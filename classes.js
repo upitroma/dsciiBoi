@@ -1,3 +1,9 @@
+var player = {
+    x: -1,
+    y: -1,
+    discsLeft: 0
+}
+
 class Disc{
     constructor(x=50,y=50,xVelo=500,yVelo=600, discId=2, bounceDecay=4){
         this.x=x
@@ -53,7 +59,7 @@ class Arm{
             this.theta += this.speed * 5 * deltatime;
             if (mouse.d)
             {
-                this.speed += 1 * deltatime;
+                this.speed += 2 * deltatime;
                 if (this.theta > Math.PI)
                 {
                     this.theta -= Math.PI * 2;
@@ -67,7 +73,8 @@ class Arm{
                     this.y + Math.sin(this.throw) * this.height,
                     500 * this.speed * Math.cos(this.throw),
                     500 * this.speed * Math.sin(this.throw))
-                    )  
+                ) 
+                player.discsLeft-- 
             }
         } else {
             this.theta += 15 * deltatime;
