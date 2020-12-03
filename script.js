@@ -20,6 +20,8 @@ var soccerBall = new Image();
 soccerBall.src="assets/sprites/scott_ball_shiny.png"
 var mineArm = new Image();
 mineArm.src = "assets/sprites/arm.png";
+var pissboy = new Image();
+pissboy.src = "assets/sprites/pissboy.png";
 
 var mouse = {
     'x': 0,
@@ -31,10 +33,6 @@ var mouse = {
 var walls=[]
 var enemies=[]
 let armyBoi = new Arm(player.x, player.y);//Arm is defined in ./classes.js
-
-var hud={
-
-}
 
 //resize the canvas when the window is resized
 window.addEventListener("resize", resizeWindow);
@@ -152,13 +150,7 @@ function drawEnemies(){
             if(w.id==0){
                 ctx.fillStyle = "red"
             }
-            drawRectangle(
-                w.centerX*scale,
-                w.centerY*scale,
-                w.width*scale,
-                w.height*scale,
-                0
-            )
+            ctx.drawImage(pissboy, (w.centerX-(w.width/2))*scale, (w.centerY-(w.height/2))*scale, w.width*scale, w.height*scale)
         }
     }
 }
@@ -193,7 +185,7 @@ function drawDisc(){
         r=d.radius
 
         //set color based on discId
-        if(d.discId==0){color=blueGlowingRing}
+        if(d.discId==0){color=pissboy}
         else if(d.discId==1){color=orangeGlowingRing}
         else if(d.discId==2){color=soccerBall}
         else{console.log("invalid discId")}

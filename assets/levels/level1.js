@@ -5,10 +5,10 @@ var level_1 = {
         discsLeft: 4
     },
     enemies: [
-        new Enemy(1000,800,50,50,0),
-        new Enemy(100,750,50,50,0),
-        new Enemy(1500,250,50,50,0),
-        new Enemy(1300,250,50,50,0)
+        new Enemy(1000,800,75,75,0),
+        new Enemy(100,750,75,75,0),
+        new Enemy(1500,250,75,75,0),
+        new Enemy(1300,250,75,75,0)
     ],
     walls: [
         new Wall(700,700,300,100, 0),

@@ -10,6 +10,6 @@ var level_0 = {
         new Wall(900,437,75,150, 0)
     ],
     enemies: [
-        new Enemy(990,400,50,50,0)
+        new Enemy(990,400,75,75,0)
     ]
 };
