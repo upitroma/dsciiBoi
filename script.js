@@ -65,7 +65,13 @@ function loadLevel(levelIndex){
 
     //make hitbox for hud
     walls.push(new Wall(1400,860,400,80,-1))
+
+    enemies.forEach((e) => {
+        e.alive=true
+    })
+
 }
+
 
 levels=[level_0, level_1, level_2, level_3, level_4]
 var currentLevel=0
