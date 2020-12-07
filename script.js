@@ -22,6 +22,8 @@ var mineArm = new Image();
 mineArm.src = "assets/sprites/arm.png";
 var pissboy = new Image();
 pissboy.src = "assets/sprites/pissboy.png";
+var stone = new Image();
+stone.src = "assets/level_assets/stone.png"
 
 var mouse = {
     'x': 0,
@@ -111,7 +113,7 @@ function mouseUpdate(event){
     mouse.y=(event.y-((window.innerHeight-canvas.height)/2))/scale
 }
 
-
+//not currently being used
 function drawRectangle(x,y,width,height,angle){
     ctx.translate(x, y);
     ctx.rotate(-angle);//negative, so when ctx is reset it's normal
@@ -132,13 +134,14 @@ function drawWalls(){
         else{
             ctx.fillStyle = "red"
         }
-        drawRectangle(
+        /*drawRectangle(
             w.centerX*scale,
             w.centerY*scale,
             w.width*scale,
             w.height*scale,
             w.angle
-        )
+        )*/
+        ctx.drawImage(stone, (w.centerX-(w.width/2))*scale, (w.centerY-(w.height/2))*scale, w.width*scale, w.height*scale)
     }
 }
 
