@@ -1,4 +1,7 @@
-
+//GameScore
+var GameScore = 0;
+//var combo = lvlScore * 2;
+//var lvlScore = 0;
 
 //canvas setup
 var canvas = document.getElementById('canvas')
@@ -22,8 +25,6 @@ var mineArm = new Image();
 mineArm.src = "assets/sprites/arm.png";
 var pissboy = new Image();
 pissboy.src = "assets/sprites/pissboy.png";
-var stone = new Image();
-stone.src = "assets/level_assets/stone.png"
 
 var mouse = {
     'x': 0,
@@ -64,7 +65,7 @@ function loadLevel(levelIndex){
     armyBoi.y=player.y
 
     //make hitbox for hud
-    walls.push(new Wall(1400,860,400,80,-1))
+    walls.push(new Wall(1300,860,800,80,-1))
 
     enemies.forEach((e) => {
         e.alive=true
@@ -87,6 +88,7 @@ function checkLevelComplete(){
     if(levelComplete){
         discs=[]
         currentLevel++
+        GameScore = 0; //Resets the score to 0 after every level
         if(currentLevel>=levels.length){
             console.log("ran out of levels!")
         }
@@ -113,7 +115,7 @@ function mouseUpdate(event){
     mouse.y=(event.y-((window.innerHeight-canvas.height)/2))/scale
 }
 
-//not currently being used
+
 function drawRectangle(x,y,width,height,angle){
     ctx.translate(x, y);
     ctx.rotate(-angle);//negative, so when ctx is reset it's normal
@@ -134,14 +136,13 @@ function drawWalls(){
         else{
             ctx.fillStyle = "red"
         }
-        /*drawRectangle(
+        drawRectangle(
             w.centerX*scale,
             w.centerY*scale,
             w.width*scale,
             w.height*scale,
             w.angle
-        )*/
-        ctx.drawImage(stone, (w.centerX-(w.width/2))*scale, (w.centerY-(w.height/2))*scale, w.width*scale, w.height*scale)
+        )
     }
 }
 
@@ -162,9 +163,10 @@ function drawHud(){
     //lots of hard coding badness 
     ctx.fillStyle="white"
     ctx.font = ""+scale*70+"px Arial";
-    ctx.fillText("Lvl "+(currentLevel+1), gameWidth*.76*scale, gameHeight*.99*scale);
-    ctx.fillText("x"+player.discsLeft, gameWidth*.92*scale, gameHeight*.99*scale);
-    ctx.drawImage(soccerBall, gameWidth*.885*scale,gameHeight*.94*scale,50*scale,50*scale)
+    ctx.fillText("Score: "+GameScore, gameWidth*.78*scale, gameHeight*.99*scale);
+    ctx.fillText("Lvl "+(currentLevel+1), gameWidth*.56*scale, gameHeight*.99*scale);
+    ctx.fillText("x"+player.discsLeft, gameWidth*.71*scale, gameHeight*.99*scale);
+    ctx.drawImage(soccerBall, gameWidth*.675*scale,gameHeight*.94*scale,50*scale,50*scale)
 }
 
 function checkBounceDecay(){
@@ -269,6 +271,9 @@ function checkDiscCollision(deltatime){
             if(e.alive){
                 if(Math.abs(d.x-e.centerX)<(e.width/2)&&(Math.abs(d.y-e.centerY)<(e.height/2))){
                     e.alive=false
+
+                     //add to the score
+                     GameScore = GameScore + 200;
 
                     //add additional bounce
                     d.bounceDecay++
