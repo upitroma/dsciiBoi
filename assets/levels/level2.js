@@ -1,7 +1,8 @@
 var level_2 = {
     player: {
         x: 700,
-        y: 450
+        y: 450,
+        discsLeft: 6
     },
     walls: [
         new Wall(375,575,100,75, 0),
@@ -18,10 +19,10 @@ var level_2 = {
         new Wall(1400,700,100,75, 0),
     ],
     enemies: [
-        new Enemy(100,485,50,50,0),
-        new Enemy(300,675,50,50,0),
-        new Enemy(1100,295,50,50,0),
-        new Enemy(1400,625,50,50,0),
-        new Enemy(250,300,50,50, 0),
+        new Enemy(100,485,75,75,0),
+        new Enemy(300,675,75,75,0),
+        new Enemy(1100,295,75,75,0),
+        new Enemy(1400,625,75,75,0),
+        new Enemy(250,300,75,75, 0),
     ]
 }

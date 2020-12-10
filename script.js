@@ -1,4 +1,7 @@
-
+//GameScore
+var GameScore = 0;
+//var combo = lvlScore * 2;
+//var lvlScore = 0;
 
 //canvas setup
 var canvas = document.getElementById('canvas')
@@ -11,8 +14,6 @@ var scale = 1;
 resizeWindow();
 
 
-
-
 //load assets
 var blueGlowingRing = new Image();
 blueGlowingRing.src = "assets/sprites/blueGlowingRing.png"
@@ -22,6 +23,10 @@ var soccerBall = new Image();
 soccerBall.src="assets/sprites/scott_ball_shiny.png"
 var mineArm = new Image();
 mineArm.src = "assets/sprites/arm.png";
+var pissboy = new Image();
+pissboy.src = "assets/sprites/pissboy.png";
+var stone = new Image();
+stone.src = "assets/level_assets/stone.png"
 
 var mouse = {
     'x': 0,
@@ -29,10 +34,7 @@ var mouse = {
     'd': 0
 }
 
-var player = {
-    x: -1,
-    y: -1,
-}
+
 var walls=[]
 var enemies=[]
 let armyBoi = new Arm(player.x, player.y);//Arm is defined in ./classes.js
@@ -63,7 +65,17 @@ function loadLevel(levelIndex){
     player=level.player
     armyBoi.x=player.x
     armyBoi.y=player.y
+
+    //make hitbox for hud
+    walls.push(new Wall(1300,860,800,80,-1))
+
+    enemies.forEach((e) => {
+        e.alive=true
+    })
+
 }
+
+
 levels=[level_0, level_1, level_2, level_3, level_4]
 var currentLevel=0
 loadLevel(currentLevel)
@@ -78,6 +90,7 @@ function checkLevelComplete(){
     if(levelComplete){
         discs=[]
         currentLevel++
+        GameScore = 0; //Resets the score to 0 after every level
         if(currentLevel>=levels.length){
             console.log("ran out of levels!")
         }
@@ -89,7 +102,9 @@ function checkLevelComplete(){
 canvas.addEventListener("mousedown", setmousedown, false)
 function setmousedown(event){
         mouse.d = 1;
-        armyBoi.setThrow();  
+        if(player.discsLeft>0){
+            armyBoi.setThrow();
+        }
 }
 canvas.addEventListener("mouseup", setmouseup, false)
 function setmouseup(event){
@@ -141,15 +156,19 @@ function drawEnemies(){
             if(w.id==0){
                 ctx.fillStyle = "red"
             }
-            drawRectangle(
-                w.centerX*scale,
-                w.centerY*scale,
-                w.width*scale,
-                w.height*scale,
-                0
-            )
+            ctx.drawImage(pissboy, (w.centerX-(w.width/2))*scale, (w.centerY-(w.height/2))*scale, w.width*scale, w.height*scale)
         }
     }
+}
+
+function drawHud(){
+    //lots of hard coding badness 
+    ctx.fillStyle="white"
+    ctx.font = ""+scale*70+"px Arial";
+    ctx.fillText("Score: "+GameScore, gameWidth*.78*scale, gameHeight*.99*scale);
+    ctx.fillText("Lvl "+(currentLevel+1), gameWidth*.56*scale, gameHeight*.99*scale);
+    ctx.fillText("x"+player.discsLeft, gameWidth*.71*scale, gameHeight*.99*scale);
+    ctx.drawImage(soccerBall, gameWidth*.675*scale,gameHeight*.94*scale,50*scale,50*scale)
 }
 
 function checkBounceDecay(){
@@ -173,7 +192,7 @@ function drawDisc(){
         r=d.radius
 
         //set color based on discId
-        if(d.discId==0){color=blueGlowingRing}
+        if(d.discId==0){color=pissboy}
         else if(d.discId==1){color=orangeGlowingRing}
         else if(d.discId==2){color=soccerBall}
         else{console.log("invalid discId")}
@@ -255,6 +274,9 @@ function checkDiscCollision(deltatime){
                 if(Math.abs(d.x-e.centerX)<(e.width/2)&&(Math.abs(d.y-e.centerY)<(e.height/2))){
                     e.alive=false
 
+                     //add to the score
+                     GameScore = GameScore + 200;
+
                     //add additional bounce
                     d.bounceDecay++
 
@@ -282,8 +304,8 @@ function update(deltatime){
     drawWalls()
     drawEnemies()
     armyBoi.update(deltatime);
+    drawHud()
     drawDisc()
-   
 }
  
 //tick
