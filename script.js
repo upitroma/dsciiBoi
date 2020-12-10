@@ -50,9 +50,37 @@ function resizeWindow(){
     }
     scale = canvas.width / gameWidth;
 }
+isLevelTransitionAndNotAnActualLevel=false
+function loadTransitionLevel(){
+    isLevelTransitionAndNotAnActualLevel=true
+    var level=transitionLevel
+
+    walls=level.walls
+    enemies=level.enemies
+    player=level.player
+    armyBoi.x=player.x
+    armyBoi.y=player.y
+
+    //make hitbox for hud
+    walls.push(new Wall(1400,860,400,80,-1))
+
+    enemies.forEach((e) => {
+        e.alive=true
+    })
+
+    
+}
+
+function drawTransitionLevelScore(){
+    ctx.fillStyle="white"
+    ctx.font = ""+scale*90+"px Arial";
+    ctx.fillText("Score: "+GameScore, gameWidth*.39*scale, gameHeight*.5*scale);
+    ctx.fillText("hit the enemy : "+GameScore, gameWidth*.39*scale, gameHeight*.5*scale);
+}
 
 
 function loadLevel(levelIndex){
+    isLevelTransitionAndNotAnActualLevel=false
     if(levelIndex>=levels.length){
         console.log("level does not exist")
         return
@@ -88,12 +116,21 @@ function checkLevelComplete(){
     }
     if(levelComplete){
         discs=[]
-        currentLevel++
-        GameScore = 0; //Resets the score to 0 after every level
         if(currentLevel>=levels.length){
             console.log("ran out of levels!")
         }
-        loadLevel(currentLevel)
+        else{
+            if(isLevelTransitionAndNotAnActualLevel){
+                GameScore = 0; //Resets the score to 0 after every level
+                currentLevel++
+                loadLevel(currentLevel)
+                
+            }
+            else{
+                loadTransitionLevel()
+            }
+        }
+        
     }
 }
 
@@ -129,7 +166,7 @@ function drawWalls(){
        
         w=walls[i];
         if(w.colorId==0){
-            ctx.fillStyle = "blue"
+            ctx.drawImage(stone, (w.centerX-(w.width/2))*scale, (w.centerY-(w.height/2))*scale, w.width*scale, w.height*scale)
         }
         else if(w.colorId==-1){
             continue; //no texture, just hitbox
@@ -144,7 +181,7 @@ function drawWalls(){
             w.height*scale,
             w.angle
         )*/
-        ctx.drawImage(stone, (w.centerX-(w.width/2))*scale, (w.centerY-(w.height/2))*scale, w.width*scale, w.height*scale)
+        
     }
 }
 
@@ -162,6 +199,9 @@ function drawEnemies(){
 }
 
 function drawHud(){
+    if(isLevelTransitionAndNotAnActualLevel){
+        return
+    }
     //lots of hard coding badness 
     ctx.fillStyle="white"
     ctx.font = ""+scale*70+"px Arial";
@@ -306,6 +346,10 @@ function update(deltatime){
     armyBoi.update(deltatime);
     drawHud()
     drawDisc()
+
+    if(isLevelTransitionAndNotAnActualLevel){
+        drawTransitionLevelScore()
+    }
 }
  
 //tick
