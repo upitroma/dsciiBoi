@@ -25,6 +25,8 @@ var mineArm = new Image();
 mineArm.src = "assets/sprites/arm.png";
 var pissboy = new Image();
 pissboy.src = "assets/sprites/pissboy.png";
+var stone = new Image();
+stone.src = "assets/level_assets/stone.png"
 
 var mouse = {
     'x': 0,
