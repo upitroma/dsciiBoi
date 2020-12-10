@@ -27,6 +27,8 @@ var pissboy = new Image();
 pissboy.src = "assets/sprites/pissboy.png";
 var stone = new Image();
 stone.src = "assets/level_assets/stone.png"
+var youLost = new Image();
+youLost.src = "assets/level_assets/youLost.png";
 var mouse = {
     'x': 0,
     'y': 0,
@@ -80,6 +82,7 @@ var currentLevel=0
 loadLevel(currentLevel)
 
 function checkLevelComplete(){
+    //console.log("are ya winning so... child?")
     levelComplete=true
     for(i=0;i<enemies.length;i++){
         if(enemies[i].alive){
@@ -126,10 +129,14 @@ function drawRectangle(x,y,width,height,angle){
 
 function drawWalls(){
     for(i=0;i<walls.length; i++){
-       
         w=walls[i];
         if(w.colorId==0){
-            ctx.fillStyle = "blue"
+            //ctx.fillStyle = "blue"
+            asset = stone;
+        }
+        else if (w.colorId == 1) {
+            asset = youLost;
+            //asset = stone;
         }
         else if(w.colorId==-1){
             continue; //no texture, just hitbox
@@ -144,7 +151,7 @@ function drawWalls(){
             w.height*scale,
             w.angle
         )*/
-        ctx.drawImage(stone, (w.centerX-(w.width/2))*scale, (w.centerY-(w.height/2))*scale, w.width*scale, w.height*scale)
+        ctx.drawImage(asset, (w.centerX-(w.width/2))*scale, (w.centerY-(w.height/2))*scale, w.width*scale, w.height*scale)
     }
 }
 
@@ -306,6 +313,11 @@ function update(deltatime){
     armyBoi.update(deltatime);
     drawHud()
     drawDisc()
+    if (discs.length == 0 && player.discsLeft == 0) {
+        player.discsLeft = -1;
+        console.log("ha you lost dumb bish");
+        walls.push(new Wall(gameWidth/2, gameHeight/2, 500, 132, 1));
+    }
 }
  
 //tick
