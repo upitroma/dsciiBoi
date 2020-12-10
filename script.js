@@ -57,7 +57,8 @@ function loadTransitionLevel(){
 
     walls=level.walls
     enemies=level.enemies
-    player=level.player
+    player.x=level.player.x
+    player.y=level.player.y
     armyBoi.x=player.x
     armyBoi.y=player.y
 
@@ -73,7 +74,7 @@ function drawTransitionLevelScore(){
     ctx.fillStyle="white"
     ctx.font = ""+scale*110+"px Arial";
     ctx.fillText("Score: "+GameScore, gameWidth*.35*scale, gameHeight*.3*scale);
-    ctx.fillText("Balls left: "+player.discsLeft, gameWidth*.35*scale, gameHeight*.5*scale);
+    ctx.fillText("Balls remaining: "+player.discsLeft, gameWidth*.25*scale, gameHeight*.5*scale);
     ctx.font = ""+scale*40+"px Arial";
     ctx.fillText("Murder the enemy to continue.", gameWidth*.60*scale, gameHeight*.8*scale);
 }

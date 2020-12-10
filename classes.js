@@ -73,8 +73,11 @@ class Arm{
                     this.y + Math.sin(this.throw) * this.height,
                     500 * this.speed * Math.cos(this.throw),
                     500 * this.speed * Math.sin(this.throw))
-                ) 
-                player.discsLeft-- 
+                )
+                if(!isLevelTransitionAndNotAnActualLevel){
+                    player.discsLeft-- 
+                } 
+                
             }
         } else {
             this.theta += 15 * deltatime;
