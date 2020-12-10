@@ -27,7 +27,6 @@ var pissboy = new Image();
 pissboy.src = "assets/sprites/pissboy.png";
 var stone = new Image();
 stone.src = "assets/level_assets/stone.png"
-
 var mouse = {
     'x': 0,
     'y': 0,
@@ -67,7 +66,7 @@ function loadLevel(levelIndex){
     armyBoi.y=player.y
 
     //make hitbox for hud
-    walls.push(new Wall(1300,860,800,80,-1))
+    walls.push(new Wall(1400,860,400,80,-1))
 
     enemies.forEach((e) => {
         e.alive=true
@@ -117,7 +116,7 @@ function mouseUpdate(event){
     mouse.y=(event.y-((window.innerHeight-canvas.height)/2))/scale
 }
 
-
+//not currently being used
 function drawRectangle(x,y,width,height,angle){
     ctx.translate(x, y);
     ctx.rotate(-angle);//negative, so when ctx is reset it's normal
@@ -138,13 +137,14 @@ function drawWalls(){
         else{
             ctx.fillStyle = "red"
         }
-        drawRectangle(
+        /*drawRectangle(
             w.centerX*scale,
             w.centerY*scale,
             w.width*scale,
             w.height*scale,
             w.angle
-        )
+        )*/
+        ctx.drawImage(stone, (w.centerX-(w.width/2))*scale, (w.centerY-(w.height/2))*scale, w.width*scale, w.height*scale)
     }
 }
 
