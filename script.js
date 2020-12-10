@@ -59,8 +59,8 @@ function loadLevel(levelIndex){
         console.log("level does not exist")
         return
     }
-    var level=levels[levelIndex]
-
+    //level = levels[levelIndex]
+    level = JSON.parse(JSON.stringify(levels[levelIndex]));
     walls=level.walls
     enemies=level.enemies
     player=level.player
@@ -317,6 +317,17 @@ function update(deltatime){
         player.discsLeft = -1;
         console.log("ha you lost dumb bish");
         walls.push(new Wall(gameWidth/2, gameHeight/2, 500, 132, 1));
+    }
+    if (player.discsLeft == -1) {
+        if (mouse.d) {
+            console.log("reset");
+            console.log(currentLevel);
+            walls = [];
+            discs = [];
+            GameScore = 0;
+            player.discsLeft = -2;
+            loadLevel(0);
+        }
     }
 }
  
