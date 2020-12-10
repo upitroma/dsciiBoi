@@ -62,8 +62,6 @@ function loadTransitionLevel(){
     armyBoi.y=player.y
 
     //make hitbox for hud
-    walls.push(new Wall(1400,860,400,80,-1))
-
     enemies.forEach((e) => {
         e.alive=true
     })
@@ -73,9 +71,11 @@ function loadTransitionLevel(){
 
 function drawTransitionLevelScore(){
     ctx.fillStyle="white"
-    ctx.font = ""+scale*90+"px Arial";
-    ctx.fillText("Score: "+GameScore, gameWidth*.39*scale, gameHeight*.5*scale);
-    ctx.fillText("hit the enemy : "+GameScore, gameWidth*.39*scale, gameHeight*.5*scale);
+    ctx.font = ""+scale*110+"px Arial";
+    ctx.fillText("Score: "+GameScore, gameWidth*.35*scale, gameHeight*.3*scale);
+    ctx.fillText("Balls left: "+player.discsLeft, gameWidth*.35*scale, gameHeight*.5*scale);
+    ctx.font = ""+scale*40+"px Arial";
+    ctx.fillText("Murder the enemy to continue.", gameWidth*.60*scale, gameHeight*.8*scale);
 }
 
 
