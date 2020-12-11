@@ -60,14 +60,7 @@ function loadTransitionLevel(){
     player.x=level.player.x
     player.y=level.player.y
     armyBoi.x=player.x
-    armyBoi.y=player.y
-
-    //make hitbox for hud
-    enemies.forEach((e) => {
-        e.alive=true
-    })
-
-    
+    armyBoi.y=player.y    
 }
 
 function drawTransitionLevelScore(){
@@ -95,7 +88,7 @@ function loadLevel(levelIndex){
     armyBoi.y=player.y
 
     //make hitbox for hud
-    walls.push(new Wall(1400,860,400,80,-1))
+    walls.push(new Wall(1225,860,750,80,-1))
 
     enemies.forEach((e) => {
         e.alive=true
@@ -174,14 +167,15 @@ function drawWalls(){
         }
         else{
             ctx.fillStyle = "red"
+            drawRectangle(
+                w.centerX*scale,
+                w.centerY*scale,
+                w.width*scale,
+                w.height*scale,
+                w.angle
+            )
         }
-        /*drawRectangle(
-            w.centerX*scale,
-            w.centerY*scale,
-            w.width*scale,
-            w.height*scale,
-            w.angle
-        )*/
+        
         
     }
 }
