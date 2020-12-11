@@ -56,6 +56,7 @@ class Arm{
         if (this.status == 0) {
             this.theta = Math.atan2((mouse.y-this.y), (mouse.x-this.x));
         } else if (this.status == 1){
+            this.throw = Math.atan2((mouse.y-this.y), (mouse.x-this.x));
             this.theta += this.speed * 5 * deltatime;
             if (mouse.d)
             {
@@ -73,8 +74,11 @@ class Arm{
                     this.y + Math.sin(this.throw) * this.height,
                     500 * this.speed * Math.cos(this.throw),
                     500 * this.speed * Math.sin(this.throw))
-                ) 
-                player.discsLeft-- 
+                )
+                if(!isLevelTransitionAndNotAnActualLevel){
+                    player.discsLeft-- 
+                } 
+                
             }
         } else {
             this.theta += 15 * deltatime;

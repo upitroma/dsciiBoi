@@ -27,6 +27,8 @@ var pissboy = new Image();
 pissboy.src = "assets/sprites/pissboy.png";
 var stone = new Image();
 stone.src = "assets/level_assets/stone.png"
+var youLoose = new Image();
+youLoose.src="assets/sprites/youLost.png"
 var mouse = {
     'x': 0,
     'y': 0,
@@ -50,14 +52,41 @@ function resizeWindow(){
     }
     scale = canvas.width / gameWidth;
 }
+isLevelTransitionAndNotAnActualLevel=false
+function loadTransitionLevel(){
+    isLevelTransitionAndNotAnActualLevel=true
+    var level=transitionLevel
+
+    walls=level.walls
+    enemies=level.enemies
+    player.x=level.player.x
+    player.y=level.player.y
+    armyBoi.x=player.x
+    armyBoi.y=player.y    
+
+    enemies.forEach((e) => {
+        e.alive=true
+    })
+}
+
+function drawTransitionLevelScore(){
+    ctx.fillStyle="white"
+    ctx.font = ""+scale*110+"px Arial";
+    ctx.fillText("Score: "+GameScore, gameWidth*.35*scale, gameHeight*.3*scale);
+    ctx.fillText("Balls remaining: "+player.discsLeft, gameWidth*.25*scale, gameHeight*.5*scale);
+    ctx.font = ""+scale*40+"px Arial";
+    ctx.fillText("Murder the enemy to continue.", gameWidth*.60*scale, gameHeight*.8*scale);
+}
 
 
 function loadLevel(levelIndex){
+    isLevelTransitionAndNotAnActualLevel=false
     if(levelIndex>=levels.length){
         console.log("level does not exist")
         return
     }
-    var level=levels[levelIndex]
+    //var level=levels[levelIndex]
+    level = JSON.parse(JSON.stringify(levels[levelIndex]));
 
     walls=level.walls
     enemies=level.enemies
@@ -66,7 +95,7 @@ function loadLevel(levelIndex){
     armyBoi.y=player.y
 
     //make hitbox for hud
-    walls.push(new Wall(1400,860,400,80,-1))
+    walls.push(new Wall(1225,860,750,80,-1))
 
     enemies.forEach((e) => {
         e.alive=true
@@ -75,7 +104,7 @@ function loadLevel(levelIndex){
 }
 
 
-levels=[level_0, level_1, level_2, level_3, level_4]
+levels=[level_0, level_1, level_2, level_3, level_4, level_5, level_6, level_7, level_8]
 var currentLevel=0
 loadLevel(currentLevel)
 
@@ -88,12 +117,21 @@ function checkLevelComplete(){
     }
     if(levelComplete){
         discs=[]
-        currentLevel++
-        GameScore = 0; //Resets the score to 0 after every level
         if(currentLevel>=levels.length){
             console.log("ran out of levels!")
         }
-        loadLevel(currentLevel)
+        else{
+            if(isLevelTransitionAndNotAnActualLevel){
+                GameScore = 0; //Resets the score to 0 after every level
+                currentLevel++
+                loadLevel(currentLevel)
+                
+            }
+            else{
+                loadTransitionLevel()
+            }
+        }
+        
     }
 }
 
@@ -101,7 +139,7 @@ function checkLevelComplete(){
 canvas.addEventListener("mousedown", setmousedown, false)
 function setmousedown(event){
         mouse.d = 1;
-        if(player.discsLeft>0){
+        if(player.discsLeft>0 || isLevelTransitionAndNotAnActualLevel){
             armyBoi.setThrow();
         }
 }
@@ -129,22 +167,26 @@ function drawWalls(){
        
         w=walls[i];
         if(w.colorId==0){
-            ctx.fillStyle = "blue"
+            ctx.drawImage(stone, (w.centerX-(w.width/2))*scale, (w.centerY-(w.height/2))*scale, w.width*scale, w.height*scale)
         }
         else if(w.colorId==-1){
             continue; //no texture, just hitbox
         }
+        else if(w.colorId==1){
+            ctx.drawImage(youLoose, (w.centerX-(w.width/2))*scale, (w.centerY-(w.height/2))*scale, w.width*scale, w.height*scale)
+        }
         else{
             ctx.fillStyle = "red"
+            drawRectangle(
+                w.centerX*scale,
+                w.centerY*scale,
+                w.width*scale,
+                w.height*scale,
+                w.angle
+            )
         }
-        /*drawRectangle(
-            w.centerX*scale,
-            w.centerY*scale,
-            w.width*scale,
-            w.height*scale,
-            w.angle
-        )*/
-        ctx.drawImage(stone, (w.centerX-(w.width/2))*scale, (w.centerY-(w.height/2))*scale, w.width*scale, w.height*scale)
+        
+        
     }
 }
 
@@ -162,6 +204,9 @@ function drawEnemies(){
 }
 
 function drawHud(){
+    if(isLevelTransitionAndNotAnActualLevel){
+        return
+    }
     //lots of hard coding badness 
     ctx.fillStyle="white"
     ctx.font = ""+scale*70+"px Arial";
@@ -274,8 +319,8 @@ function checkDiscCollision(deltatime){
                 if(Math.abs(d.x-e.centerX)<(e.width/2)&&(Math.abs(d.y-e.centerY)<(e.height/2))){
                     e.alive=false
 
-                     //add to the score
-                     GameScore = GameScore + 200;
+                    //add to the score
+                    GameScore = GameScore + 200;
 
                     //add additional bounce
                     d.bounceDecay++
@@ -306,6 +351,35 @@ function update(deltatime){
     armyBoi.update(deltatime);
     drawHud()
     drawDisc()
+
+    if(isLevelTransitionAndNotAnActualLevel){
+        drawTransitionLevelScore()
+    }
+
+    if (discs.length == 0 && player.discsLeft == 0 && !isLevelTransitionAndNotAnActualLevel) {
+        lost = false;
+        for (let i = 0; i < enemies.length; i++) {
+            if (enemies[i].alive == true) {
+                lost = true;
+            }            
+        }
+        if (lost){
+            player.discsLeft = -1;
+            console.log("ha you lost");
+            walls.push(new Wall(gameWidth/2, gameHeight/2, 500, 132, 1));
+        }
+    }
+    if (player.discsLeft == -1) {
+        if (mouse.d) {
+            console.log("reset");
+            console.log(currentLevel);
+            walls = [];
+            discs = [];
+            GameScore = 0;
+            player.discsLeft = -2;
+            loadLevel(currentLevel);
+        }
+    }
 }
  
 //tick
