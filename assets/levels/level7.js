@@ -11,8 +11,8 @@ var level_7 = {
 
     ],
     enemies: [
-        new Enemy(800,250,50,50, 0),
-        new Enemy(500,300,50,50, 0),
-        new Enemy(1100,400,50,50, 0),
+        new Enemy(800,250,75,75, 0),
+        new Enemy(500,300,75,75, 0),
+        new Enemy(1100,400,75,75, 0),
     ]
 };
