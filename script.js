@@ -314,9 +314,17 @@ function update(deltatime){
     drawHud()
     drawDisc()
     if (discs.length == 0 && player.discsLeft == 0) {
-        player.discsLeft = -1;
-        console.log("ha you lost dumb bish");
-        walls.push(new Wall(gameWidth/2, gameHeight/2, 500, 132, 1));
+        lost = false;
+        for (let i = 0; i < enemies.length; i++) {
+            if (enemies.[i].alive == true) {
+                lost = true;
+            }            
+        }
+        if (lost){
+            player.discsLeft = -1;
+            console.log("ha you lost dumb bish");
+            walls.push(new Wall(gameWidth/2, gameHeight/2, 500, 132, 1));
+        }
     }
     if (player.discsLeft == -1) {
         if (mouse.d) {
