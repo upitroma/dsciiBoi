@@ -326,7 +326,7 @@ function update(deltatime){
             discs = [];
             GameScore = 0;
             player.discsLeft = -2;
-            loadLevel(0);
+            loadLevel(currentLevel);
         }
     }
 }
