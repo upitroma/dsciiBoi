@@ -139,7 +139,7 @@ function checkLevelComplete(){
 canvas.addEventListener("mousedown", setmousedown, false)
 function setmousedown(event){
         mouse.d = 1;
-        if(player.discsLeft>0){
+        if(player.discsLeft>0 || isLevelTransitionAndNotAnActualLevel){
             armyBoi.setThrow();
         }
 }
@@ -356,7 +356,7 @@ function update(deltatime){
         drawTransitionLevelScore()
     }
 
-    if (discs.length == 0 && player.discsLeft == 0) {
+    if (discs.length == 0 && player.discsLeft == 0 && !isLevelTransitionAndNotAnActualLevel) {
         lost = false;
         for (let i = 0; i < enemies.length; i++) {
             if (enemies[i].alive == true) {
