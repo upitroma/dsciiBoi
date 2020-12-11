@@ -85,7 +85,8 @@ function loadLevel(levelIndex){
         console.log("level does not exist")
         return
     }
-    var level=levels[levelIndex]
+    //var level=levels[levelIndex]
+    level = JSON.parse(JSON.stringify(levels[levelIndex]));
 
     walls=level.walls
     enemies=level.enemies
