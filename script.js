@@ -27,6 +27,8 @@ var pissboy = new Image();
 pissboy.src = "assets/sprites/pissboy.png";
 var stone = new Image();
 stone.src = "assets/level_assets/stone.png"
+var youLoose = new Image();
+youLoose.src="assets/sprites/youLost.png"
 var mouse = {
     'x': 0,
     'y': 0,
@@ -168,6 +170,9 @@ function drawWalls(){
         }
         else if(w.colorId==-1){
             continue; //no texture, just hitbox
+        }
+        else if(w.colorId==1){
+            ctx.drawImage(youLoose, (w.centerX-(w.width/2))*scale, (w.centerY-(w.height/2))*scale, w.width*scale, w.height*scale)
         }
         else{
             ctx.fillStyle = "red"
@@ -348,6 +353,23 @@ function update(deltatime){
 
     if(isLevelTransitionAndNotAnActualLevel){
         drawTransitionLevelScore()
+    }
+
+    if (discs.length == 0 && player.discsLeft == 0) {
+        player.discsLeft = -1;
+        console.log("ha you lost");
+        walls.push(new Wall(gameWidth/2, gameHeight/2, 500, 132, 1));
+    }
+    if (player.discsLeft == -1) {
+        if (mouse.d) {
+            console.log("reset");
+            console.log(currentLevel);
+            walls = [];
+            discs = [];
+            GameScore = 0;
+            player.discsLeft = -2;
+            loadLevel(0);
+        }
     }
 }
  
