@@ -319,8 +319,8 @@ function checkDiscCollision(deltatime){
                 if(Math.abs(d.x-e.centerX)<(e.width/2)&&(Math.abs(d.y-e.centerY)<(e.height/2))){
                     e.alive=false
 
-                     //add to the score
-                     GameScore = GameScore + 200;
+                    //add to the score
+                    GameScore = GameScore + 200;
 
                     //add additional bounce
                     d.bounceDecay++
@@ -357,9 +357,17 @@ function update(deltatime){
     }
 
     if (discs.length == 0 && player.discsLeft == 0) {
-        player.discsLeft = -1;
-        console.log("ha you lost");
-        walls.push(new Wall(gameWidth/2, gameHeight/2, 500, 132, 1));
+        lost = false;
+        for (let i = 0; i < enemies.length; i++) {
+            if (enemies[i].alive == true) {
+                lost = true;
+            }            
+        }
+        if (lost){
+            player.discsLeft = -1;
+            console.log("ha you lost");
+            walls.push(new Wall(gameWidth/2, gameHeight/2, 500, 132, 1));
+        }
     }
     if (player.discsLeft == -1) {
         if (mouse.d) {
@@ -369,7 +377,7 @@ function update(deltatime){
             discs = [];
             GameScore = 0;
             player.discsLeft = -2;
-            loadLevel(0);
+            loadLevel(currentLevel);
         }
     }
 }
