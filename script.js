@@ -61,6 +61,10 @@ function loadTransitionLevel(){
     player.y=level.player.y
     armyBoi.x=player.x
     armyBoi.y=player.y    
+
+    enemies.forEach((e) => {
+        e.alive=true
+    })
 }
 
 function drawTransitionLevelScore(){
