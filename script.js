@@ -316,7 +316,7 @@ function update(deltatime){
     if (discs.length == 0 && player.discsLeft == 0) {
         lost = false;
         for (let i = 0; i < enemies.length; i++) {
-            if (enemies.[i].alive == true) {
+            if (enemies[i].alive == true) {
                 lost = true;
             }            
         }
