@@ -56,6 +56,7 @@ class Arm{
         if (this.status == 0) {
             this.theta = Math.atan2((mouse.y-this.y), (mouse.x-this.x));
         } else if (this.status == 1){
+            this.throw = Math.atan2((mouse.y-this.y), (mouse.x-this.x));
             this.theta += this.speed * 5 * deltatime;
             if (mouse.d)
             {
